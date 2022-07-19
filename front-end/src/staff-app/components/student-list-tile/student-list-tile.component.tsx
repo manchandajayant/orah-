@@ -9,13 +9,14 @@ import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-sw
 interface Props {
   isRollMode?: boolean
   student: Person
+  order:string
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
+export const StudentListTile: React.FC<Props> = ({ isRollMode, student, order }) => {
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
       <S.Content>
-        <div>{PersonHelper.getFullName(student)}</div>
+        <div>{PersonHelper.getFullName(student,order)}</div>
       </S.Content>
       {isRollMode && (
         <S.Roll>
