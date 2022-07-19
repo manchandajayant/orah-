@@ -12,11 +12,23 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
+  const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-
+  const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
+  const [ascendOrDescend, setAscendOrDescend] = useState<String>("ascend")
   useEffect(() => {
     void getStudents()
   }, [getStudents])
+
+  useEffect(() => {
+    if (loadState === "loaded") {
+      let students: Person[] | undefined = data?.students.sort((a: Person, b: Person): number => {
+        return a.first_name < b.first_name ? -1 : 1
+      })
+      setSortedStudentsArray(students)
+      setOnLoadSort(true)
+    }
+  }, [loadState])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -30,10 +42,25 @@ export const HomeBoardPage: React.FC = () => {
     }
   }
 
+  const onClickSort = (action: sortAction) => {
+    setAscendOrDescend(action)
+    if (action === "ascend") {
+      let students: Person[] | undefined = sortedStudentsArray?.sort((a: Person, b: Person): number => {
+        return a.first_name < b.first_name ? -1 : 1
+      })
+      setSortedStudentsArray(students)
+    } else {
+      let students: Person[] | undefined = sortedStudentsArray?.sort((a: Person, b: Person): number => {
+        return b.first_name < a.first_name ? -1 : 1
+      })
+      setSortedStudentsArray(students)
+    }
+  }
+
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} />
+        <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -41,9 +68,9 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
 
-        {loadState === "loaded" && data?.students && (
+        {loadState === "loaded" && onLoadSort && (
           <>
-            {data.students.map((s) => (
+            {sortedStudentsArray?.map((s) => (
               <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
             ))}
           </>
@@ -61,14 +88,22 @@ export const HomeBoardPage: React.FC = () => {
 }
 
 type ToolbarAction = "roll" | "sort"
+type sortAction = "ascend" | "descend"
 interface ToolbarProps {
+  ascendOrDescend: String
+  onClickSort: (action: sortAction, value?: string) => void
   onItemClick: (action: ToolbarAction, value?: string) => void
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props
+  const { onItemClick, ascendOrDescend, onClickSort } = props
   return (
     <S.ToolbarContainer>
-      <div onClick={() => onItemClick("sort")}>First Name</div>
+      <div>
+        First Name
+        <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
+          <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} />
+        </S.IconContainer>
+      </div>
       <div>Search</div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
@@ -79,6 +114,7 @@ const S = {
   PageContainer: styled.div`
     display: flex;
     flex-direction: column;
+    font-family: "Open Sans", sans-serif;
     width: 50%;
     margin: ${Spacing.u4} auto 140px;
   `,
@@ -89,12 +125,18 @@ const S = {
     color: #fff;
     background-color: ${Colors.blue.base};
     padding: 6px 14px;
+    font-family: "Open Sans", sans-serif;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
+  `,
+  IconContainer: styled.span`
+    margin-left: 10px;
+    cursor: pointer;
   `,
   Button: styled(Button)`
     && {
       padding: ${Spacing.u2};
+      font-family: "Open Sans", sans-serif;
       font-weight: ${FontWeight.strong};
       border-radius: ${BorderRadius.default};
     }
