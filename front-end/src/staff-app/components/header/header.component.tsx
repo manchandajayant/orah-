@@ -6,13 +6,21 @@ import { FontWeight } from "shared/styles/styles"
 
 export const Header: React.FC = () => {
   return (
-    <S.Header>
+    <S.SideBar>
       <S.HeaderItems>
-        <NavItem to="/">Orah</NavItem>
+        <NavItem to="/"><img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" width={"50px"} height={"50px"}/></NavItem>
         <NavItem to="daily-care">Daily Care</NavItem>
         <NavItem to="activity">Activity</NavItem>
       </S.HeaderItems>
-    </S.Header>
+    </S.SideBar>
+    // <S.Header>
+    //   <S.SideBar/>
+    //   <S.HeaderItems>
+    //     <NavItem to="/">Orah</NavItem>
+    //     <NavItem to="daily-care">Daily Care</NavItem>
+    //     <NavItem to="activity">Activity</NavItem>
+    //   </S.HeaderItems>
+    // </S.Header>
   )
 }
 
@@ -20,9 +28,9 @@ const NavItem: React.FC<{ to: string }> = (props) => {
   const activeStyle = ({ isActive }: { isActive: boolean }) => ({
     textDecoration: "none",
     fontWeight: FontWeight.strong,
-    color: "#fff",
-    padding: "18px 20px 17px",
-    backgroundColor: isActive ? "#1b4f90" : Colors.blue.base,
+    color: "#000",
+    // padding: "18px 20px 17px",
+    backgroundColor: isActive ? "#1b4f90" : Colors.gradients.dark,
   })
   return (
     <NavLink to={props.to} style={activeStyle}>
@@ -36,11 +44,26 @@ const S = {
     display: flex;
     align-items: center;
     height: 56px;
-    background-color: ${Colors.blue.base};
+    background-color: ${Colors.gradients.dark};
     color: #fff;
   `,
+  SideBar:styled.nav`
+    background: #fff;
+    top:0;
+    color: #656565;
+    box-shadow: none;
+    border-right: 1px solid #e5e5e5;
+    width: 220px;
+    margin: 0 50px 50px 0;
+    position: fixed;
+    left: 0;
+    height: 100vh;
+    z-index: 3;
+    color: #0b152f;
+    transition: all .3s;
+    border-radius: 0;`,
   HeaderItems: styled.nav`
-    display: flex;
-    height: 100%;
+    display: block;
+    color:"#000";
   `,
 }

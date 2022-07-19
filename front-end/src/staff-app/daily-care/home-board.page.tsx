@@ -153,6 +153,8 @@ const S = {
     display: flex;
     flex-direction: column;
     font-family: "Open Sans", sans-serif;
+    border:solid 1px #DFDFDE;
+    border-radius:${BorderRadius.default};
     width: 50%;
     margin: ${Spacing.u4} auto 140px;
   `,
@@ -160,8 +162,8 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #fff;
-    background-color: ${Colors.blue.base};
+    color: #000;
+    background-color: ${Colors.added.base};
     padding: 6px 14px;
     font-family: "Open Sans", sans-serif;
     font-weight: ${FontWeight.strong};
