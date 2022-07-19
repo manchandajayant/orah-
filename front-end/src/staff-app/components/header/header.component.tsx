@@ -8,19 +8,19 @@ export const Header: React.FC = () => {
   return (
     <S.SideBar>
       <S.HeaderItems>
-        <NavItem to="/"><img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" width={"50px"} height={"50px"}/></NavItem>
-        <NavItem to="daily-care">Daily Care</NavItem>
-        <NavItem to="activity">Activity</NavItem>
+        <S.Logo>
+          <img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" width={"130px"} />
+        </S.Logo>
+        <S.Navcontainer>
+          <NavItem to="/">
+            Home
+          </NavItem>
+          <NavItem to="daily-care">Daily Care</NavItem>
+          <NavItem to="activity">Activity</NavItem>
+        </S.Navcontainer>
+
       </S.HeaderItems>
     </S.SideBar>
-    // <S.Header>
-    //   <S.SideBar/>
-    //   <S.HeaderItems>
-    //     <NavItem to="/">Orah</NavItem>
-    //     <NavItem to="daily-care">Daily Care</NavItem>
-    //     <NavItem to="activity">Activity</NavItem>
-    //   </S.HeaderItems>
-    // </S.Header>
   )
 }
 
@@ -29,8 +29,9 @@ const NavItem: React.FC<{ to: string }> = (props) => {
     textDecoration: "none",
     fontWeight: FontWeight.strong,
     color: "#000",
-    // padding: "18px 20px 17px",
-    backgroundColor: isActive ? "#1b4f90" : Colors.gradients.dark,
+    display:"block",
+    padding: "18px 20px 17px",
+    backgroundColor: isActive ? Colors.added.siteHover : "#fff",
   })
   return (
     <NavLink to={props.to} style={activeStyle}>
@@ -44,8 +45,16 @@ const S = {
     display: flex;
     align-items: center;
     height: 56px;
-    background-color: ${Colors.gradients.dark};
+    background-color: ${Colors.gradients.dark}
     color: #fff;
+  `,
+  Navcontainer:styled.div`
+    display:block;
+    height:100px;
+  `,
+  Logo:styled.div`
+    margin:30px;
+    margin-top:30px;
   `,
   SideBar:styled.nav`
     background: #fff;
