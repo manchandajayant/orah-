@@ -9,6 +9,7 @@ import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
+import { Images } from "assets/images"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -143,7 +144,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       <div>
         <input type="text" onChange={searchForStudents}/>
       </div>
-      <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
+      <S.Button onClick={() => onItemClick("roll")}><img src={Images.attendance} width={"30px"} height={"30px"}/></S.Button>
     </S.ToolbarContainer>
   )
 }
@@ -155,8 +156,12 @@ const S = {
     font-family: "Open Sans", sans-serif;
     border:solid 1px #DFDFDE;
     border-radius:${BorderRadius.default};
-    width: 50%;
-    margin: ${Spacing.u4} auto 140px;
+    width: 60%;
+    margin: 2% 0 0 27%;
+    @media screen and (max-width: 800px){
+      width:80%;
+      margin: ${Spacing.u4} auto 600px;
+    }
   `,
   ToolbarContainer: styled.div`
     display: flex;

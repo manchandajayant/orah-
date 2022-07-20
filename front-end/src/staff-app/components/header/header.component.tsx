@@ -70,7 +70,12 @@ const S = {
     z-index: 3;
     color: #0b152f;
     transition: all .3s;
-    border-radius: 0;`,
+    border-radius: 0;
+    @media screen and (max-width: 1000px){
+      display:none;
+    }
+    `
+    ,
   HeaderItems: styled.nav`
     display: block;
     color:"#000";
