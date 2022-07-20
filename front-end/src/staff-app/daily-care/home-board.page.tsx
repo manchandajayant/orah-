@@ -9,14 +9,28 @@ import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
+import { Images } from "assets/images"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
+  const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-
+  const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
+  const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
+  const [order, setOrder] = useState<string>("first")
   useEffect(() => {
     void getStudents()
   }, [getStudents])
+
+  useEffect(() => {
+    if (loadState === "loaded") {
+      let students: Person[] | undefined = data?.students.sort((a: Person, b: Person): number => {
+        return a.first_name < b.first_name ? -1 : 1
+      })
+      setSortedStudentsArray(students)
+      setOnLoadSort(true)
+    }
+  }, [loadState])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -30,10 +44,55 @@ export const HomeBoardPage: React.FC = () => {
     }
   }
 
+  // function which recieves action
+  const onClickSort = (action: sortAction) => {
+    setAscendOrDescend(action)
+    if (action === "ascend") {
+      sortFunction(action, order)
+    } else if (action === "descend") {
+      sortFunction(action, order)
+    } else if (action === "first") {
+      setOrder("first")
+      setAscendOrDescend("ascend")
+      sortFunction("ascend", action)
+    } else {
+      setOrder("last")
+      setAscendOrDescend("ascend")
+      sortFunction("ascend", action)
+    }
+  }
+
+  // common sorting function 
+  const sortFunction = (action: string, order: string): void => {
+    let students: Person[] | undefined = sortedStudentsArray?.sort((a: Person, b: Person): number => {
+      return action === "ascend"
+        ? a[order === "first" ? "first_name" : "last_name"] < b[order === "first" ? "first_name" : "last_name"]
+          ? -1
+          : 1
+        : b[order === "first" ? "first_name" : "last_name"] < a[order === "first" ? "first_name" : "last_name"]
+        ? -1
+        : 1
+    })
+    setSortedStudentsArray(students)
+  } 
+
+
+  const searchForStudents = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    if(e.target.value.length >= 1) {
+      let filtered:Person[] | undefined = data?.students.filter((person:Person)=>{
+        let str:string = person.first_name.toLocaleLowerCase() + person.last_name.toLocaleLowerCase()
+        return str.includes(e.target.value.toLocaleLowerCase())
+      })
+      setSortedStudentsArray(filtered)
+    } else {
+      setSortedStudentsArray(data?.students)
+    }
+  }
+
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} />
+        <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} searchForStudents={searchForStudents} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -41,10 +100,10 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
 
-        {loadState === "loaded" && data?.students && (
+        {loadState === "loaded" && onLoadSort && (
           <>
-            {data.students.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
+            {sortedStudentsArray?.map((s) => (
+              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} order={order} />
             ))}
           </>
         )}
@@ -61,16 +120,31 @@ export const HomeBoardPage: React.FC = () => {
 }
 
 type ToolbarAction = "roll" | "sort"
+type sortAction = "ascend" | "descend" | "first" | "last"
 interface ToolbarProps {
+  ascendOrDescend: string
+  searchForStudents: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onClickSort: (action: sortAction, value?: string) => void
   onItemClick: (action: ToolbarAction, value?: string) => void
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props
+  const { onItemClick, ascendOrDescend, onClickSort,searchForStudents } = props
   return (
     <S.ToolbarContainer>
-      <div onClick={() => onItemClick("sort")}>First Name</div>
-      <div>Search</div>
-      <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
+      <S.LeftSideContainer>
+        Sort By:
+        <S.Options>
+          <S.Option onClick={() => onClickSort("first")}>First Name</S.Option>
+          <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option>
+        </S.Options>
+        <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
+          <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} />
+        </S.IconContainer>
+      </S.LeftSideContainer>
+      <div>
+        <input type="text" onChange={searchForStudents}/>
+      </div>
+      <S.Button onClick={() => onItemClick("roll")}><img src={Images.attendance} width={"30px"} height={"30px"}/></S.Button>
     </S.ToolbarContainer>
   )
 }
@@ -79,22 +153,44 @@ const S = {
   PageContainer: styled.div`
     display: flex;
     flex-direction: column;
-    width: 50%;
-    margin: ${Spacing.u4} auto 140px;
+    font-family: "Open Sans", sans-serif;
+    border:solid 1px #DFDFDE;
+    border-radius:${BorderRadius.default};
+    width: 60%;
+    margin: 2% 0 0 27%;
+    @media screen and (max-width: 800px){
+      width:80%;
+      margin: ${Spacing.u4} auto 600px;
+    }
   `,
   ToolbarContainer: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #fff;
-    background-color: ${Colors.blue.base};
+    color: #000;
+    background-color: ${Colors.added.base};
     padding: 6px 14px;
+    font-family: "Open Sans", sans-serif;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
+  `,
+  IconContainer: styled.span`
+    margin-left: 10px;
+    cursor: pointer;
+  `,
+  Options:styled.div`
+    display:block
+  `,
+  Option:styled.span`
+    display:block
+  `,
+  LeftSideContainer:styled.div`
+  display:flex
   `,
   Button: styled(Button)`
     && {
       padding: ${Spacing.u2};
+      font-family: "Open Sans", sans-serif;
       font-weight: ${FontWeight.strong};
       border-radius: ${BorderRadius.default};
     }

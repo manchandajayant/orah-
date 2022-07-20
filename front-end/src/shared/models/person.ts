@@ -5,6 +5,8 @@ export interface Person {
   photo_url?: string
 }
 
+export type order = string
+
 export const PersonHelper = {
-  getFullName: (p: Person) => `${p.first_name} ${p.last_name}`,
+  getFullName: (p: Person,order:order) => order=== "first" ? `${p.first_name} ${p.last_name}` : `${p.last_name} ${p.first_name}`,
 }
