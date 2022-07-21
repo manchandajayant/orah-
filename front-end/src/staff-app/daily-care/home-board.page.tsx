@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -10,8 +10,10 @@ import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { Images } from "assets/images"
-
+import {RollContext} from "Context/student-context-api"
 export const HomeBoardPage: React.FC = () => {
+  const {state,sortedDataArray,dispatch} = useContext(RollContext)
+  // console.log(first,dispatch)
   const [isRollMode, setIsRollMode] = useState(false)
   const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
@@ -46,6 +48,7 @@ export const HomeBoardPage: React.FC = () => {
 
   // function which recieves action
   const onClickSort = (action: sortAction) => {
+    dispatch('present')
     setAscendOrDescend(action)
     if (action === "ascend") {
       sortFunction(action, order)
