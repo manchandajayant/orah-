@@ -18,8 +18,8 @@ export const Colors = {
   },
   added: {
     base: "#ffffff",
-    site:"#002744",
-    siteHover:"#9ba5af"
+    site: "#002744",
+    siteHover: "#9ba5af",
   },
   gradients: {
     dark: "background: #1A4691;\
