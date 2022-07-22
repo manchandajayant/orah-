@@ -9,18 +9,18 @@ import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-sw
 interface Props {
   isRollMode?: boolean
   student: Person
-  order:string
+  order: string
 }
 export const StudentListTile: React.FC<Props> = ({ isRollMode, student, order }) => {
   return (
     <S.Container>
       <S.Avatar url={Images.user_alt}></S.Avatar>
       <S.Content>
-        <div>{PersonHelper.getFullName(student,order)}</div>
+        <div>{PersonHelper.getFullName(student, order)}</div>
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher student={student}/>
+          <RollStateSwitcher student={student} />
         </S.Roll>
       )}
     </S.Container>
@@ -32,7 +32,7 @@ const S = {
     margin-top: 0.5px;
     padding-right: ${Spacing.u2};
     display: flex;
-    border-bottom:solid 1px #dee2e6;
+    border-bottom: solid 1px #dee2e6;
     background-color: #fff;
     transition: box-shadow 0.3s ease-in-out;
 
@@ -42,12 +42,12 @@ const S = {
   `,
   Avatar: styled.div<{ url: string }>`
     width: 60px;
-    height:60px;
+    height: 60px;
     background-image: url(${({ url }) => url});
     background-size: cover;
     background-position: 50%;
     align-self: stretch;
-    margin:3px;
+    margin: 3px;
   `,
   Content: styled.div`
     flex-grow: 1;

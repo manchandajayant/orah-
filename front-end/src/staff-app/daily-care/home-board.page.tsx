@@ -4,11 +4,14 @@ import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
-import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
+import { CenteredContainer } from 
+"shared/components/centered-container/centered-container.component"
 import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
-import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
-import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
+import { StudentListTile } from 
+"staff-app/components/student-list-tile/student-list-tile.component"
+import { ActiveRollOverlay, ActiveRollAction } from 
+"staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { Images } from "assets/images"
 import {RollContext} from "Context/student-context-api"
 export const HomeBoardPage: React.FC = () => {
@@ -17,8 +20,10 @@ export const HomeBoardPage: React.FC = () => {
 
   const [isRollMode, setIsRollMode] = useState(false)
   const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-  const [getStudents, data] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
+  const [getStudents, data] = useApi<{ students: Person[] }>({ url: 
+"get-homeboard-students" })
+  const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | 
+undefined>([])
   const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
   const [order, setOrder] = useState<string>("first")
   useEffect(() => {
@@ -27,11 +32,7 @@ export const HomeBoardPage: React.FC = () => {
 
   useEffect(() => {
     if (loadState === "loaded" && state.all_data) {
-      // set all this data into component state
-      let students: Person[] | undefined = state?.all_data?.students.sort((a: Person, b: Person): number => {
-        return a.first_name < b.first_name ? -1 : 1
-      })
-      setSortedStudentsArray(students)
+      setSortedStudentsArray(state.all_data.students)
       setOnLoadSort(true)
     }
   }, [loadState,state])
@@ -69,12 +70,15 @@ export const HomeBoardPage: React.FC = () => {
 
   // common sorting function 
   const sortFunction = (action: string, order: string): void => {
-    let students: Person[] | undefined = sortedStudentsArray?.sort((a: Person, b: Person): number => {
+    let students: Person[] | undefined = sortedStudentsArray?.sort((a: Person, b: 
+Person): number => {
       return action === "ascend"
-        ? a[order === "first" ? "first_name" : "last_name"] < b[order === "first" ? "first_name" : "last_name"]
+        ? a[order === "first" ? "first_name" : "last_name"] < b[order === "first" 
+? "first_name" : "last_name"]
           ? -1
           : 1
-        : b[order === "first" ? "first_name" : "last_name"] < a[order === "first" ? "first_name" : "last_name"]
+        : b[order === "first" ? "first_name" : "last_name"] < a[order === "first" 
+? "first_name" : "last_name"]
         ? -1
         : 1
     })
@@ -85,8 +89,10 @@ export const HomeBoardPage: React.FC = () => {
   const searchForStudents = (e: React.ChangeEvent<HTMLInputElement>) =>{
     // Fix for names with spaces
     if(e.target.value.length >= 1) {
-      let filtered:Person[] | undefined = state?.all_data?.students.filter((person:Person)=>{
-        let str:string = person.first_name.toLocaleLowerCase() + person.last_name.toLocaleLowerCase()
+      let filtered:Person[] | undefined = 
+state?.all_data?.students.filter((person:Person)=>{
+        let str:string = person.first_name.toLocaleLowerCase() + 
+person.last_name.toLocaleLowerCase()
         return str.includes(e.target.value.toLocaleLowerCase())
       })
       setSortedStudentsArray(filtered)
@@ -98,7 +104,8 @@ export const HomeBoardPage: React.FC = () => {
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} searchForStudents={searchForStudents} />
+        <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} 
+onClickSort={onClickSort} searchForStudents={searchForStudents} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -109,7 +116,8 @@ export const HomeBoardPage: React.FC = () => {
         {loadState === "loaded" && onLoadSort && (
           <>
             {sortedStudentsArray?.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} order={order} />
+              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} 
+order={order} />
             ))}
           </>
         )}
@@ -120,7 +128,8 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
       </S.PageContainer>
-      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} />
+      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} 
+/>
     </>
   )
 }
@@ -143,14 +152,17 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
           <S.Option onClick={() => onClickSort("first")}>First Name</S.Option>
           <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option>
         </S.Options>
-        <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
-          <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} />
+        <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" 
+? "descend" : "ascend")}>
+          <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" 
+: "sort-alpha-up"} />
         </S.IconContainer>
       </S.LeftSideContainer>
       <div>
         <input type="text" onChange={searchForStudents}/>
       </div>
-      <S.Button onClick={() => onItemClick("roll")}><img src={Images.attendance} width={"30px"} height={"30px"}/></S.Button>
+      <S.Button onClick={() => onItemClick("roll")}><img src={Images.attendance} 
+width={"30px"} height={"30px"}/></S.Button>
     </S.ToolbarContainer>
   )
 }
@@ -202,3 +214,4 @@ const S = {
     }
   `,
 }
+

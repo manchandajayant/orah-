@@ -26,9 +26,9 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
     setStateList((list: StateList[]): StateList[] =>
       list.map((obj: StateList) => {
         if (obj.type === "all") {
-          return { ...obj, count: store.state.studentRolls.length }
+          return { ...obj, count: store?.state?.studentRolls.length }
         }
-        let count = store.state.studentRolls.filter((el: { student_id: number; roll_state: string }) => {
+        let count = store?.state?.studentRolls.filter((el: { student_id: number; roll_state: string }) => {
           return el["roll_state"] === obj.type
         })
         return { ...obj, count: count.length }

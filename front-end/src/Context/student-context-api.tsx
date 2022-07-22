@@ -2,23 +2,26 @@ import React, { createContext, useReducer, ReactNode, useEffect, useState } from
 import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
 import { RollInput } from "shared/models/roll"
+
 interface state {
-  // present: number,
-  // absent: number,
-  // late: number,
-  // total: number,
+  fetched:any
+  all_data: any
   studentRolls: any
 }
 
 const initialState: state = {
-  // present: 0,
-  // absent: 0,
-  // late: 0,
-  // total: 0,
+  fetched:[],
+  all_data: [],
   studentRolls: [],
 }
 
-export type Action = { type: "all_data"; payload: {} } | { type: "student_rolls"; payload: {} }
+interface ActionType {
+  type: string
+  payload?: {}
+}
+
+// Refactor to add action type so that the action can be without a payload
+export type Action = { type: "all_data"; payload: {} } | { type: "student_rolls"; payload: {} } | { type: "present" | "absent" | "late"; payload: {} }
 export type State = typeof initialState
 export type sortedDataArray = Person[] | undefined
 export type Dispatch = (action: Action) => void
@@ -29,48 +32,42 @@ export const RollContext = createContext<any>({} as any)
 const rollReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "all_data":
-      return { ...state, [action.type]: action.payload }
+      return { ...state, all_data: action.payload, fetched:action.payload }
+    case "present": case "absent": case "late":
+      let all_students = state.fetched.students
+      let filtered = all_students.filter((obj: Person) => {
+        return obj.rollValue === action.type
+      })
+      console.log(filtered)
+      if(filtered.length){
+        return { ...state, all_data: { students: filtered } }
+      }
+      return state
     case "student_rolls":
       // change to correct type
       let val: any = action.payload
-      let arr = state.studentRolls.filter((v: { student_id: number; roll_state: string }) => 
-        v.student_id == val.student_id 
-      )
+      let arr = state.studentRolls.filter((v: { student_id: number; roll_state: string }) => v.student_id == val.student_id)
       if (arr.length) {
         if (val.roll_state === arr[0]?.roll_state) {
           return state
         } else {
           return {
             ...state,
-            studentRolls: state.studentRolls.map((m: { student_id: number; roll_state: string }) =>
-            val.student_id === m.student_id ? { ...m, roll_state: val.roll_state } : m
-            ),
+            studentRolls: state.studentRolls.map((m: { student_id: number; roll_state: string }) => (val.student_id === m.student_id ? { ...m, roll_state: val.roll_state } : m)),
+            all_data: { students: state?.all_data.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
+            fetched:{ students: state?.fetched.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
           }
         }
       }
-      return { ...state, studentRolls: [...state.studentRolls, val] }
+      // console.log(state.all_data)
+      return {
+        ...state,
+        studentRolls: [...state.studentRolls, val],
+        all_data: { students: state?.all_data.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
+        fetched:{ students: state?.fetched.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
+      }
     default:
       return state
-    // case "present":
-    //   return {
-    //     ...state,
-    //     present: state.present + 1,
-    //   }
-    // case "absent":
-    //   return {
-    //     ...state,
-    //     absent: state.absent + 1,
-    //   }
-    // case "late":
-    //   return {
-    //     ...state,
-    //     late: state.late + 1,
-    //   }
-    // case "all":
-    //   return {...state,studentRolls:[...state.all_podcasts, "new"]}
-
-    // case "rollCall":
-    //     return {...state,studentRolls:[...state.studentRolls, "a new item"]}
   }
 }
 
