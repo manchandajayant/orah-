@@ -12,10 +12,12 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 import { Images } from "assets/images"
 import {RollContext} from "Context/student-context-api"
 export const HomeBoardPage: React.FC = () => {
-  const cstate = useContext(RollContext)
+  const store = useContext(RollContext)
+  const {loadState,state} = useContext(RollContext)
+
   const [isRollMode, setIsRollMode] = useState(false)
   const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-  const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+  const [getStudents, data] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
   const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
   const [order, setOrder] = useState<string>("first")
@@ -24,14 +26,15 @@ export const HomeBoardPage: React.FC = () => {
   }, [getStudents])
 
   useEffect(() => {
-    if (loadState === "loaded") {
-      let students: Person[] | undefined = data?.students.sort((a: Person, b: Person): number => {
+    if (loadState === "loaded" && state.all_data) {
+      // set all this data into component state
+      let students: Person[] | undefined = state?.all_data?.students.sort((a: Person, b: Person): number => {
         return a.first_name < b.first_name ? -1 : 1
       })
       setSortedStudentsArray(students)
       setOnLoadSort(true)
     }
-  }, [loadState])
+  }, [loadState,state])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -80,14 +83,15 @@ export const HomeBoardPage: React.FC = () => {
 
 
   const searchForStudents = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    // Fix for names with spaces
     if(e.target.value.length >= 1) {
-      let filtered:Person[] | undefined = data?.students.filter((person:Person)=>{
+      let filtered:Person[] | undefined = state?.all_data?.students.filter((person:Person)=>{
         let str:string = person.first_name.toLocaleLowerCase() + person.last_name.toLocaleLowerCase()
         return str.includes(e.target.value.toLocaleLowerCase())
       })
       setSortedStudentsArray(filtered)
     } else {
-      setSortedStudentsArray(data?.students)
+      setSortedStudentsArray(state?.all_data?.students)
     }
   }
 
