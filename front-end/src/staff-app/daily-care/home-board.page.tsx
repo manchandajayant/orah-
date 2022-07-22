@@ -12,8 +12,7 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 import { Images } from "assets/images"
 import {RollContext} from "Context/student-context-api"
 export const HomeBoardPage: React.FC = () => {
-  const {state,sortedDataArray,dispatch} = useContext(RollContext)
-  // console.log(first,dispatch)
+  const cstate = useContext(RollContext)
   const [isRollMode, setIsRollMode] = useState(false)
   const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
@@ -45,10 +44,10 @@ export const HomeBoardPage: React.FC = () => {
       setIsRollMode(false)
     }
   }
-
+  // console.log(state)
   // function which recieves action
   const onClickSort = (action: sortAction) => {
-    dispatch('present')
+    // dispatch("rollCall")
     setAscendOrDescend(action)
     if (action === "ascend") {
       sortFunction(action, order)
