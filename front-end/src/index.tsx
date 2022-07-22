@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import "index.css"
 import StaffApp from "staff-app/app"
 import { GlobalStyle } from "shared/styles/global-style"
+import { RollProvider } from "Context/student-context-api"
 
 const Home: React.FC = () => {
   return (
@@ -20,10 +21,12 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home>Engineering Test</Home>} />
-        <Route path="staff/*" element={<StaffApp />} />
-      </Routes>
+      <RollProvider>
+        <Routes>
+          <Route path="/" element={<Home>Engineering Test</Home>} />
+          <Route path="staff/*" element={<StaffApp />} />
+        </Routes>
+      </RollProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

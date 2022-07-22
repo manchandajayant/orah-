@@ -1,13 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { RolllStateType } from "shared/models/roll"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
-
+import {RollContext} from "Context/student-context-api"
+import {Person} from "shared/models/person"
 interface Props {
   initialState?: RolllStateType
   size?: number
   onStateChange?: (newState: RolllStateType) => void
+  student:Person
 }
-export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange }) => {
+export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange,student }) => {
+  const cstate = useContext(RollContext)
+  const {loadState,state,dispatch} = useContext(RollContext)
   const [rollState, setRollState] = useState(initialState)
 
   const nextState = () => {
@@ -20,6 +24,7 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
   const onClick = () => {
     const next = nextState()
     setRollState(next)
+    dispatch({type:"student_rolls",payload:{student_id:student.id , roll_state: next}})
     if (onStateChange) {
       onStateChange(next)
     }
