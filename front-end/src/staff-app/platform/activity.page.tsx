@@ -10,12 +10,15 @@ export const ActivityPage: React.FC = () => {
   const { loadStateActivity, state, loadStateActivityCall } = useContext(RollContext)
 
   useEffect(() => {
-    void loadStateActivityCall()
+    if(loadStateActivity){
+      void loadStateActivityCall()
+    }
   }, [])
-  console.log(state)
+
 
   return (
     <S.Container>
+      <S.ActivityLog>Activity Log</S.ActivityLog>
       {loadStateActivity === "loading" && (
         <CenteredContainer>
           <FontAwesomeIcon icon="spinner" size="2x" spin />
@@ -23,7 +26,13 @@ export const ActivityPage: React.FC = () => {
       )}
 
       {loadStateActivity === "loaded" && (
-        <>{state.all_activity.activity.students.length > 1 ? <div>Here is a list of students</div> : <div>You have no rolls at the moment</div>}</>
+        <>{state.all_activity?.activity?.length < 1 ? <div>You have no rolls at the moment</div> :
+        <div>Here is a list of students</div>
+        
+        
+        }
+        </>
+        
       )}
     </S.Container>
   )
@@ -36,4 +45,8 @@ const S = {
     width: 50%;
     margin: ${Spacing.u4} auto 0;
   `,
+  ActivityLog:styled.div`
+    display:flex;
+    justify-content:center
+  `
 }

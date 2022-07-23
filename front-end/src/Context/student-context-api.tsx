@@ -2,39 +2,51 @@ import React, { createContext, useReducer, ReactNode, useEffect, useState } from
 import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
 import { Activity } from "shared/models/activity"
+import {LoadState} from "shared/hooks/use-api"
 
+
+interface Student{
+  students?:Person[]
+}
 // defines types properly
-interface state {
+interface State {
   fetched:any
   all_data: any
   all_activity:any
   studentRolls: any
 }
 
-const initialState: state = {
-  fetched:[],
-  all_data: [],
+const initialState: State = {
+  fetched:{},
+  all_data: {},
   studentRolls: [],
-  all_activity:[]
+  all_activity:{}
 }
 
-interface ActionType {
-  type: string
-  payload?: {}
-}
-
-// Refactor to add action type so that the action can be without a payload
-export type Action = { type: "all_data"; payload: {} } | { type: "student_rolls"; payload: {} } | { type: "all_activity"; payload: {} }  | { type: "present" | "absent" | "late" | "all"; payload: {} }
-export type State = typeof initialState
+// Refactor to add action type so that the action can be without a payload -- fixed, remove payload from rol calls
+export type Action =
+  | { type: "all_data"; payload: {} }
+  | { type: "student_rolls"; payload: {} }
+  | { type: "all_activity"; payload: Activity[] | undefined }
+  | { type: "present" | "absent" | "late" | "all" }
 export type sortedDataArray = Person[] | undefined
 export type Dispatch = (action: Action) => void
 
+export interface RollContext {
+  state: State
+  dispatch: Dispatch
+  loadState: LoadState
+  loadStateActivity: LoadState
+  loadStateActivityCall: () => void
+}
+
 // Change this to define types properly
-export const RollContext = createContext<any>({} as any)
+export const RollContext = createContext<RollContext>({} as RollContext)
 
 const rollReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "all_data":
+      console.log(action.payload)
       return { ...state, all_data: action.payload, fetched:action.payload }
     case "all":
       return { ...state, all_data: { students: state.fetched.students } }
@@ -105,7 +117,7 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
   // Fix state for activity since UI shows older state first and then updates it
   useEffect(()=>{
     if (loadStateActivity === "loaded") {
-      dispatch({ type: "all_activity", payload: { students: dataActivity?.activity } })
+      dispatch({ type: "all_activity", payload: dataActivity?.activity  })
     }
   },[loadStateActivity,getActivities])
 
