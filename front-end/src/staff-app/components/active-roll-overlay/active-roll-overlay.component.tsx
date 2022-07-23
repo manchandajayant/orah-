@@ -31,7 +31,7 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
         let count = store?.state?.studentRolls.filter((el: { student_id: number; roll_state: string }) => {
           return el["roll_state"] === obj.type
         })
-        return { ...obj, count: count.length }
+        return { ...obj, count: count?.length }
       })
     )
   }, [store.state])

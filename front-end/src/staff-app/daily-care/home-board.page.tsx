@@ -100,6 +100,7 @@ export const HomeBoardPage: React.FC = () => {
   return (
     <>
       <S.PageContainer>
+        <S.Heading>Students List</S.Heading>
         <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} searchForStudents={searchForStudents} />
 
         {loadState === "loading" && (
@@ -150,7 +151,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
         </S.IconContainer>
       </S.LeftSideContainer>
       <div>
-        <input type="text" onChange={searchForStudents} />
+        <S.Input type="text" onChange={searchForStudents} />
       </div>
       <S.Button onClick={() => onItemClick("roll")}>
         <img src={Images.attendance} width={"30px"} height={"30px"} />
@@ -163,11 +164,9 @@ const S = {
   PageContainer: styled.div`
     display: flex;
     flex-direction: column;
-    font-family: "Open Sans", sans-serif;
-    border: solid 1px #dfdfde;
-    border-radius: ${BorderRadius.default};
+    font-family: 'Nunito Sans', sans-serif;
     width: 60%;
-    margin: 2% 0 0 27%;
+    margin: 2% 0 10% 27%;
     @media screen and (max-width: 800px) {
       width: 80%;
       margin: ${Spacing.u4} auto 600px;
@@ -176,13 +175,31 @@ const S = {
   ToolbarContainer: styled.div`
     display: flex;
     justify-content: space-between;
+    /* border: solid 1px #dfdfde;
+    border-radius: ${BorderRadius.default}; */
     align-items: center;
     color: #000;
     background-color: ${Colors.added.base};
     padding: 6px 14px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
+  `,
+  Heading:styled.div`
+    display: flex;
+    justify-content: center;
+    font-size:26px;
+    margin-left: 12%;
+    margin-bottom: 7%;
+  `,
+  Input:styled.input`
+    width: 100%;
+    font-size: 14px;
+    padding: 6px 6px;
+    border-width: 1px;
+    border-style: solid;
+    margin: 0;
+    border-radius:20px
   `,
   IconContainer: styled.span`
     margin-left: 10px;
@@ -200,7 +217,7 @@ const S = {
   Button: styled(Button)`
     && {
       padding: ${Spacing.u2};
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Nunito Sans', sans-serif;
       font-weight: ${FontWeight.strong};
       border-radius: ${BorderRadius.default};
     }

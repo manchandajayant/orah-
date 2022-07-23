@@ -32,12 +32,12 @@ const S = {
     margin-top: 0.5px;
     padding-right: ${Spacing.u2};
     display: flex;
-    border-bottom: solid 1px #dee2e6;
+    /* border-bottom: solid 1px #dee2e6; */
     background-color: #fff;
     transition: box-shadow 0.3s ease-in-out;
-
+    cursor: pointer;
     &:hover {
-      box-shadow: 0 2px 7px rgba(5, 66, 145, 0.26);
+      box-shadow: 0 2px 7px rgb(11,21,47, 0.86);
     }
   `,
   Avatar: styled.div<{ url: string }>`
@@ -54,6 +54,7 @@ const S = {
     padding: ${Spacing.u2};
     color: ${Colors.added.site};
     font-weight: ${FontWeight.strong};
+    margin-top: 1.5%;
   `,
   Roll: styled.div`
     display: flex;
