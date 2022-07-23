@@ -102,6 +102,7 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
     void getActivities()
   }
 
+  // Fix state for activity since UI shows older state first and then updates it
   useEffect(()=>{
     if (loadStateActivity === "loaded") {
       dispatch({ type: "all_activity", payload: { students: dataActivity?.activity } })
@@ -112,7 +113,3 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
   return <RollContext.Provider value={{ state, dispatch, loadState,loadStateActivity,loadStateActivityCall }}>{children}</RollContext.Provider>
 }
 
-
-// export const getAllActivity = () =>{
-
-// }
