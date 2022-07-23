@@ -1,11 +1,13 @@
 import React, { createContext, useReducer, ReactNode, useEffect, useState } from "react"
 import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
-import { RollInput } from "shared/models/roll"
+import { Activity } from "shared/models/activity"
 
+// defines types properly
 interface state {
   fetched:any
   all_data: any
+  all_activity:any
   studentRolls: any
 }
 
@@ -13,6 +15,7 @@ const initialState: state = {
   fetched:[],
   all_data: [],
   studentRolls: [],
+  all_activity:[]
 }
 
 interface ActionType {
@@ -21,7 +24,7 @@ interface ActionType {
 }
 
 // Refactor to add action type so that the action can be without a payload
-export type Action = { type: "all_data"; payload: {} } | { type: "student_rolls"; payload: {} } | { type: "present" | "absent" | "late"; payload: {} }
+export type Action = { type: "all_data"; payload: {} } | { type: "student_rolls"; payload: {} } | { type: "all_activity"; payload: {} }  | { type: "present" | "absent" | "late" | "all"; payload: {} }
 export type State = typeof initialState
 export type sortedDataArray = Person[] | undefined
 export type Dispatch = (action: Action) => void
@@ -33,12 +36,15 @@ const rollReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "all_data":
       return { ...state, all_data: action.payload, fetched:action.payload }
+    case "all":
+      return { ...state, all_data: { students: state.fetched.students } }
+    case "all_activity":
+      return { ...state, all_activity: { activity: action.payload } }
     case "present": case "absent": case "late":
       let all_students = state.fetched.students
       let filtered = all_students.filter((obj: Person) => {
         return obj.rollValue === action.type
       })
-      console.log(filtered)
       if(filtered.length){
         return { ...state, all_data: { students: filtered } }
       }
@@ -73,8 +79,10 @@ const rollReducer = (state: State, action: Action) => {
 
 export const RollProvider = ({ children }: { children: ReactNode }) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [sortedDataArray, setsortedDataArray] = useState<Person[] | undefined>([])
+  // const [sortedDataArray, setsortedDataArray] = useState<Person[] | undefined>([])
   const [state, dispatch] = useReducer(rollReducer, initialState)
+  const [getActivities,dataActivity,loadStateActivity] = useApi<{  activity: Activity[] }>({ url: "get-activities" })
+
 
   useEffect(() => {
     void getStudents()
@@ -87,9 +95,24 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
       })
       let newStudentsArray = students?.map((student: {}) => ({ ...student, rollValue: "unmark" }))
       dispatch({ type: "all_data", payload: { students: newStudentsArray } })
-      setsortedDataArray(students)
     }
   }, [loadState])
 
-  return <RollContext.Provider value={{ state, dispatch, sortedDataArray, loadState }}>{children}</RollContext.Provider>
+  const loadStateActivityCall = () =>{
+    void getActivities()
+  }
+
+  useEffect(()=>{
+    if (loadStateActivity === "loaded") {
+      dispatch({ type: "all_activity", payload: { students: dataActivity?.activity } })
+    }
+  },[loadStateActivity,getActivities])
+
+
+  return <RollContext.Provider value={{ state, dispatch, loadState,loadStateActivity,loadStateActivityCall }}>{children}</RollContext.Provider>
 }
+
+
+// export const getAllActivity = () =>{
+
+// }

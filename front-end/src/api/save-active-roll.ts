@@ -26,7 +26,7 @@ function createRoll(id: number, input: RollInput) {
   return {
     id,
     name: `Roll ${id}`,
-    student_roll_states: input.student_roll_states,
+    student_roll_states: input,
     completed_at: new Date(),
   }
 }
