@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
@@ -271,25 +270,34 @@ const S = {
     LeftSideContainer: styled.div`
         display: flex;
     `,
-    Button: styled(Button)`
+    Button: styled.button`
         && {
             padding: ${Spacing.u2};
             font-family: "Nunito Sans", sans-serif;
             font-weight: ${FontWeight.strong};
             border-radius: ${BorderRadius.default};
+            background-color:transparent;
+            border:none;
+            color:#fff;
+            font-weight:bolder;
+            cursor: pointer;
             @media screen and (max-width: 800px) {
                 display: none;
             }
         }
     `,
-    ButtonMobile: styled(Button)`
+    ButtonMobile: styled.button`
         && {
             display: none;
+            background-color:transparent;
+            border:none;
+            color:#fff;
+            font-weight:bolder;
+            cursor: pointer;
             @media screen and (max-width: 800px) and (min-width: 450px) {
                 display: inline-block;
                 padding: ${Spacing.u2};
                 margin-left: 40%;
-                font-family: "Nunito Sans", sans-serif;
                 font-weight: ${FontWeight.strong};
                 border-radius: ${BorderRadius.default};
             }
@@ -297,7 +305,6 @@ const S = {
                 display: inline-block;
                 padding: ${Spacing.u2};
                 margin-left: 30%;
-                font-family: "Nunito Sans", sans-serif;
                 font-weight: ${FontWeight.strong};
                 border-radius: ${BorderRadius.default};
             }

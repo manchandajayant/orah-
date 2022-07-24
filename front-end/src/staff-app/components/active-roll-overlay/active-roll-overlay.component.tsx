@@ -89,6 +89,7 @@ const S = {
         border:none;
         color:#fff;
         font-weight:bolder;
+        cursor: pointer;
         @media screen and (max-width: 800px) {
              font-size:11px;
              margin-left:26px;
