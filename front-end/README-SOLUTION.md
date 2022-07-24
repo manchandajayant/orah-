@@ -27,7 +27,7 @@
 # Staging branch 
 - solution 
 
-# Other Branches (UI and Bug fixes)
+# Other branches (ui and bug fixes)
 - ui-activity-page
 - reset-state
 - fixing-type-bugs
