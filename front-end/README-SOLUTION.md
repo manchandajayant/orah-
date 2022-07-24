@@ -1,4 +1,4 @@
-# Technology Used
+# Technologies Used
 - React 
 - Typscript 
 - Styled Components 
@@ -20,3 +20,8 @@
 
 - [x] (BONUS) Save the current roll and display it in activity page
 - Branch [Save-the-current-roll-and-display-it-in-activity-page](https://github.com/manchandajayant/orah-engineering-test/tree/Save-the-current-roll-and-display-it-in-activity-page)
+
+
+# Branch Tree 
+- Main 
+ - Solution 
