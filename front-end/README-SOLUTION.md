@@ -23,9 +23,9 @@
 
 
 # Branches 
-1. Main 
+- Main 
  - Solution
-  - implement-search-and-sort-of-students
-  - displaying-a-roll-summary
-  - filter-students-based-on-roll-state
-  - Save-the-current-roll-and-display-it-in-activity-page
+  * implement-search-and-sort-of-students
+  * displaying-a-roll-summary
+  * filter-students-based-on-roll-state
+  * Save-the-current-roll-and-display-it-in-activity-page
