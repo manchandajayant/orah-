@@ -9,6 +9,7 @@ interface DropDownProps {
     onClickSort: (action: sortAction, value?: string) => void
 }
 
+
 export const DropDownComponent: React.FC<DropDownProps> = ({ onClickSort }) => {
     const [isOpen, setIsOpen] = useState<Boolean>(false)
     const [selectedOption, setSelectedOption] = useState<string>("")
@@ -20,7 +21,7 @@ export const DropDownComponent: React.FC<DropDownProps> = ({ onClickSort }) => {
         action === "first" ? setSelectedOption("First Name") : setSelectedOption("Last Name")
         setIsOpen(false)
     }
-
+   
     return (
         <S.Main>
             <S.DropDownContainer>
@@ -33,8 +34,8 @@ export const DropDownComponent: React.FC<DropDownProps> = ({ onClickSort }) => {
                 {isOpen && (
                     <S.DropDownListContainer>
                         <S.DropDownList>
-                            {options.map((option: any) => (
-                                <S.ListItem key={Math.random()} onClick={() => onOptionClicked(option)}>
+                            {options.map((option: string) => (
+                                <S.ListItem key={Math.random()} onClick={() => onOptionClicked(option as sortAction)}>
                                     {option === "first" ? "First Name" : "Last Name"}
                                 </S.ListItem>
                             ))}

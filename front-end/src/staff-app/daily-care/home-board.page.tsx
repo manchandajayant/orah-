@@ -148,7 +148,7 @@ export const HomeBoardPage: React.FC = () => {
 }
 
 type ToolbarAction = "roll" | "sort"
-export type sortAction = "ascend" | "descend" | "first" | "last" | "First Name" | "Last Name"
+export type sortAction = "ascend" | "descend" | "first" | "last"
 
 interface ToolbarProps {
     ascendOrDescend: string
