@@ -86,7 +86,7 @@ const rollReducer = (state: State, action: Action) => {
                 fetched: state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
             }
         case "reset_all_data":
-            return { ...state, all_data: state.list_of_all_students }
+            return { ...state, all_data: state.list_of_all_students,studentRolls:initialState.studentRolls }
         default:
             return state
     }
