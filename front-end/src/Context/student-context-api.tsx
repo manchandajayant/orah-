@@ -28,7 +28,7 @@ export type Action =
   | { type: "all_data"; payload: {} }
   | { type: "student_rolls"; payload: {} }
   | { type: "all_activity"; payload: Activity[] | undefined }
-  | { type: "present" | "absent" | "late" | "all" }
+  | { type: "present" | "absent" | "late" | "all" | "unmark"; payload?:{} }
 export type sortedDataArray = Person[] | undefined
 export type Dispatch = (action: Action) => void
 

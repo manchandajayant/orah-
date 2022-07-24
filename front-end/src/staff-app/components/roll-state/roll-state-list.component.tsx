@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import { Spacing, FontWeight } from "shared/styles/styles"
 import { RolllStateType } from "shared/models/roll"
-import { RollContext } from "Context/student-context-api"
-
+import { RollContext } from "context/student-context-api"
+import {Action} from "context/student-context-api"
 interface Props {
   stateList: StateList[]
   onItemClick?: (type: ItemType) => void
@@ -14,7 +14,7 @@ interface Props {
 export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemClick }) => {
   const { dispatch } = useContext(RollContext)
   const onClick = (type: ItemType) => {
-    dispatch({ type: type, payload: {} })
+    dispatch({ type })
     if (onItemClick) {
       onItemClick(type)
     }

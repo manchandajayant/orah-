@@ -10,7 +10,7 @@ import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { Images } from "assets/images"
-import { RollContext } from "Context/student-context-api"
+import { RollContext } from "context/student-context-api"
 export const HomeBoardPage: React.FC = () => {
   const store = useContext(RollContext)
   const { loadState, state } = useContext(RollContext)

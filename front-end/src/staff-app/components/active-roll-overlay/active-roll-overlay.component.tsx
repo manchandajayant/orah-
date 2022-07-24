@@ -3,7 +3,7 @@ import styled from "styled-components"
 import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
-import { RollContext } from "Context/student-context-api"
+import { RollContext } from "context/student-context-api"
 import { StateList } from "staff-app/components/roll-state/roll-state-list.component"
 
 export type ActiveRollAction = "filter" | "exit" | "complete"
