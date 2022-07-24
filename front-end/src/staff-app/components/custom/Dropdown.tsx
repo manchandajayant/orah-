@@ -1,76 +1,87 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-
+import React, { useState } from "react"
+import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { sortAction } from "staff-app/daily-care/home-board.page"
 const Main = styled("div")`
   font-family: sans-serif;
-  background: #f0f0f0;
-  height: 100vh;
-`;
+`
 
 const DropDownContainer = styled("div")`
   width: 10.5em;
   margin: 0 auto;
-`;
+`
 
 const DropDownHeader = styled("div")`
-  margin-bottom: 0.8em;
-  padding: 0.4em 2em 0.4em 1em;
+  padding: 0.5em 1em 0.4em 1em;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   font-weight: 500;
-  font-size: 1.3rem;
-  color: #3faffa;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
   background: #ffffff;
-`;
+  cursor: pointer;
+`
 
-const DropDownListContainer = styled("div")``;
+const DropDownListContainer = styled("div")`
+  position: fixed;
+  width: inherit;
+  cursor: pointer;
+`
 
-const DropDownList = styled("ul")`
+const DropDownList = styled("div")`
   padding: 0;
   margin: 0;
-  padding-left: 1em;
   background: #ffffff;
   border: 2px solid #e5e5e5;
   box-sizing: border-box;
-  color: #3faffa;
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  &:first-child {
-    padding-top: 0.8em;
+`
+
+const ListItem = styled("div")`
+  padding: 0.8em 0 0.8em 0.8em;
+  &:hover {
+    background-color: rgb(247, 247, 247);
   }
-`;
+`
 
-const ListItem = styled("li")`
-  list-style: none;
-  margin-bottom: 0.8em;
-`;
+const IconContainer = styled("span")`
+  padding-top: 1.3px;
+`
 
-const options = ["Mangoes", "Apples", "Oranges"];
+const options = ["first","last"]
 
-export default function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+interface DropDownProps {
+  onClickSort: (action: sortAction, value?: string) => void
+}
 
-  const toggling = () => setIsOpen(!isOpen);
+export const DropDownComponent: React.FC<DropDownProps> = ({ onClickSort }) => {
+  const [isOpen, setIsOpen] = useState<Boolean>(false)
+  const [selectedOption, setSelectedOption] = useState<string>("")
 
-//   const onOptionClicked = value => () => {
-//     setSelectedOption(value);
-//     setIsOpen(false);
-//     console.log(selectedOption);
-//   };
+  const toggling = () => setIsOpen(!isOpen)
+
+  const onOptionClicked = (action:sortAction) => {
+    onClickSort(action)
+    action === "first" ? setSelectedOption("First Name") : setSelectedOption("Last Name")
+    setIsOpen(false)
+  }
 
   return (
     <Main>
-      <h1>Custom Select/dropdown</h1>
       <DropDownContainer>
         <DropDownHeader onClick={toggling}>
-          {selectedOption || "Mangoes"}
+          <span>{selectedOption || "First Name"}</span>
+          <IconContainer>
+            <FontAwesomeIcon icon={"angle-down"} />
+          </IconContainer>
         </DropDownHeader>
         {isOpen && (
           <DropDownListContainer>
             <DropDownList>
-              {options.map(option => (
-                <ListItem  key={Math.random()}>
-                  {option}
+              {options.map((option:any) => (
+                <ListItem key={Math.random()} onClick={() => onOptionClicked(option)}>
+                  {option === "first" ? "First Name" : "Last Name"}
                 </ListItem>
               ))}
             </DropDownList>
@@ -78,5 +89,7 @@ export default function App() {
         )}
       </DropDownContainer>
     </Main>
-  );
+  )
 }
+
+export default DropDownComponent

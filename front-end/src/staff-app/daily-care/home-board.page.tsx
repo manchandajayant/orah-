@@ -11,6 +11,8 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { Images } from "assets/images"
 import { RollContext } from "context/student-context-api"
+import DropDownComponent from "staff-app/components/custom/Dropdown"
+
 export const HomeBoardPage: React.FC = () => {
   const store = useContext(RollContext)
   const { loadState, state } = useContext(RollContext)
@@ -129,7 +131,8 @@ export const HomeBoardPage: React.FC = () => {
 }
 
 type ToolbarAction = "roll" | "sort"
-type sortAction = "ascend" | "descend" | "first" | "last"
+export type sortAction = "ascend" | "descend" | "first" | "last" | "First Name" | "Last Name"
+
 interface ToolbarProps {
   ascendOrDescend: string
   searchForStudents: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -141,20 +144,21 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
   return (
     <S.ToolbarContainer>
       <S.LeftSideContainer>
-        Sort By:
         <S.Options>
-          <S.Option onClick={() => onClickSort("first")}>First Name</S.Option>
-          <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option>
+        <DropDownComponent onClickSort={onClickSort}/>
+          {/* <S.Option onClick={() => onClickSort("first")}>First Name</S.Option> */}
+          {/* <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option> */}
         </S.Options>
         <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
-          <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} />
+          {/* <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} /> */}
+          <img src={Images.sort} height={30} width={30}/>
         </S.IconContainer>
       </S.LeftSideContainer>
       <div>
-        <S.Input type="text" onChange={searchForStudents} />
+        <S.Input type="text" onChange={searchForStudents} placeholder={"Search for students..."}/>
       </div>
       <S.Button onClick={() => onItemClick("roll")}>
-        <img src={Images.attendance} width={"30px"} height={"30px"} />
+        <img src={Images.attendance} width={"25px"} height={"25px"} />
       </S.Button>
     </S.ToolbarContainer>
   )
@@ -184,12 +188,15 @@ const S = {
     font-family: 'Nunito Sans', sans-serif;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
+    @media screen and (max-width: 800px) {
+      display:block;
+    }
   `,
   Heading:styled.div`
     display: flex;
     justify-content: center;
     font-size:26px;
-    margin-left: 12%;
+    margin-left: 4%;
     margin-bottom: 7%;
   `,
   Input:styled.input`
@@ -199,14 +206,21 @@ const S = {
     border-width: 1px;
     border-style: solid;
     margin: 0;
-    border-radius:20px
+    border-radius:20px;
+    &::-webkit-input-placeholder {
+    font-size:12px;
+    font-family: 'Nunito Sans', sans-serif;
+    padding-left:5px
+  }
   `,
   IconContainer: styled.span`
     margin-left: 10px;
     cursor: pointer;
+    margin-top:7px;
   `,
   Options: styled.div`
     display: block;
+    margin-top:7px;
   `,
   Option: styled.span`
     display: block;
