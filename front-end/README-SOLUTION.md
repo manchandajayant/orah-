@@ -59,3 +59,4 @@
 - reset-state
 - fixing-type-bugs
 - any-last-UI-or-function-change
+- remove-all-any-type
