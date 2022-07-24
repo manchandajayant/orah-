@@ -28,7 +28,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                             <S.Total>Total: {activity.entity.student_roll_states.length}</S.Total>
                             <S.Date>{moment(activity.date).format("MMMM Do, YYYY") + "  " + moment(activity.date).format("hh:mm A")}</S.Date>
                         </S.Section>
-                        <S.Section>
+                        <S.SectionCircles>
                             <S.CircleContainer>
                                 <S.Circles color={Colors.gradients.colorsForRoll[0]}></S.Circles>
                                 <S.CircleNumber>
@@ -49,7 +49,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                                     {obj.absent}
                                 </S.CircleNumber>
                             </S.CircleContainer>
-                        </S.Section>
+                        </S.SectionCircles>
                     </S.Card>
                 )
             })}
@@ -75,24 +75,46 @@ const S = {
         justify-content: space-between;
         border: 1px solid #e5e5e5;
         margin-bottom: 3%;
+        @media screen and (max-width: 800px) {
+            display:block;
+        }
+    `,
+    Section: styled.div`
+        font-family: "Nunito Sans", sans-serif;
     `,
     Name: styled.div`
         width: 100%;
         height: auto;
         line-height: ${Spacing.u10};
         font-weight: bold;
-        margin: ${Spacing.u5} ${Spacing.u5} 0 ${Spacing.u5};
+        font-size:22px;
+        margin: ${Spacing.u5} ${Spacing.u5} ${Spacing.u1} ${Spacing.u5};
+        @media screen and (max-width: 800px) {
+            margin: ${Spacing.u5} ${Spacing.u5} 0 ${Spacing.u5};
+            font-size:14px;
+        }
     `,
     Date: styled.div`
         font-family: "Nunito Sans", sans-serif;
         margin: ${Spacing.u3} ${Spacing.u5};
+        font-size:14px;
+        @media screen and (max-width: 800px) {
+            font-size:12px;
+        }
     `,
-    Section: styled.div`
+    SectionCircles: styled.div`
         font-family: "Nunito Sans", sans-serif;
+        @media screen and (max-width: 800px) {
+            display:flex;
+        }
     `,
     Total: styled.div`
         font-family: "Nunito Sans", sans-serif;
         margin-left: ${Spacing.u5};
+        font-size:16px;
+        @media screen and (max-width: 800px) {
+            font-size:12px;
+        }
     `,
     CircleContainer: styled.div`
         display: flex;
@@ -101,6 +123,11 @@ const S = {
         font-family: "Nunito Sans", sans-serif;
         margin: 15px;
         color: #808080;
+        font-size:14px;
+        @media screen and (max-width: 800px) {
+            font-size:12px;
+            margin: ${Spacing.u2} 0 0 ${Spacing.u3};
+        }
     `,
     Circles: styled.span`
         height: 25px;
@@ -109,6 +136,11 @@ const S = {
         border-radius: 50%;
         display: flex;
         margin: ${Spacing.u3};
+        @media screen and (max-width: 800px) {
+            height: 15px;
+            width: 15px;
+            margin: ${Spacing.u2} 0 0 ${Spacing.u3};
+        }
     `,
     Span: styled.span`
         /* font-weight:700; */

@@ -9,9 +9,10 @@ import { RollProvider } from "context/student-context-api"
 const Home: React.FC = () => {
     return (
         <div className="app">
+            <img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" height={80} width={80} className="orah-img"/>                
             <header className="app-header">
-                <p>Engineering Test</p>
-                <Link to="staff/daily-care">Staff</Link>
+            <h1 className="heading-app">Daily Care</h1>
+            <Link to="staff/daily-care" className="link-to-staff">Staff</Link>
             </header>
         </div>
     )

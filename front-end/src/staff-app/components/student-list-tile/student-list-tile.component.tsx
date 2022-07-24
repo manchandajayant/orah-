@@ -37,7 +37,12 @@ const S = {
         transition: box-shadow 0.3s ease-in-out;
         cursor: pointer;
         &:hover {
-            box-shadow: 0 2px 7px rgb(11, 21, 47, 0.86);
+            box-shadow: 0 1px 7px #e5e5e5;
+            background-color: rgb(247, 247, 247);
+        }
+        @media screen and (max-width: 800px) {
+            border:solid 1px #e5e5e5;
+            border-radius:${BorderRadius.default};
         }
     `,
     Avatar: styled.div<{ url: string }>`
@@ -48,6 +53,10 @@ const S = {
         background-position: 50%;
         align-self: stretch;
         margin: 3px;
+        @media screen and (max-width: 800px) {
+            width: 40px;
+            height: 40px;
+        }
     `,
     Content: styled.div`
         flex-grow: 1;

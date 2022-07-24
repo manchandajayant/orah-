@@ -2,18 +2,43 @@
 
 .app {
   text-align: center;
+  background-color: #fff;
 }
 
 .app-header {
-  background-color: #282c34;
+  background-color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);
-  color: #fff;
+  color: #000;
+}
+
+.orah-img{
+  /* margin:5px; */
+  margin-left: 1%;
+  height: 10em;
+  width:10em;
+  display: flex;
 }
 
 .app-header a {
-  color: #fff;
+  color: #000;
+}
+
+@media only screen and (max-width: 800px) {
+  .orah-img{
+    margin-left: 33%;
+    height: 10em;
+    width:10em;
+  }
+
+  .heading-app{
+    margin-top:35%;
+  }
+
+  .link-to-staff{
+    text-decoration: underline;
+  }
 }
