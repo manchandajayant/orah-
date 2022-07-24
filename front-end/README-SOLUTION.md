@@ -37,6 +37,17 @@
 - UI for landing page
 - Mobile responsive styling
 
+# Other cases 
+- Search Query with a space does not work.
+- Mobile Sidebar collapse button.
+- A page for when internet is not working.
+- A popup for when user has not completed any rolls and they press complete.
+
+# Code improvements 
+- Correct data types to be implemented for student rolls (using any now).
+- General refactor of functions and splitting of some more components.
+- Define different action types for situations where no payload is required.
+
 # Prodcution branch
 - main
 
