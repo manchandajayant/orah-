@@ -144,16 +144,17 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
     const { onItemClick, ascendOrDescend, onClickSort, searchForStudents } = props
     return (
         <S.ToolbarContainer>
+            <S.InputMobile type="text" onChange={searchForStudents} placeholder={"Search for students..."} />
             <S.LeftSideContainer>
                 <S.Options>
                     <DropDownComponent onClickSort={onClickSort} />
-                    {/* <S.Option onClick={() => onClickSort("first")}>First Name</S.Option> */}
-                    {/* <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option> */}
                 </S.Options>
                 <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
-                    {/* <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} /> */}
                     <img src={Images.sort} height={30} width={30} />
                 </S.IconContainer>
+                <S.ButtonMobile onClick={() => onItemClick("roll")}>
+                    <img src={Images.attendance} width={"25px"} height={"25px"} />
+                </S.ButtonMobile>
             </S.LeftSideContainer>
             <div>
                 <S.Input type="text" onChange={searchForStudents} placeholder={"Search for students..."} />
@@ -174,7 +175,7 @@ const S = {
         margin: 2% 0 10% 27%;
         @media screen and (max-width: 800px) {
             width: 80%;
-            margin: ${Spacing.u4} auto 600px;
+            margin: ${Spacing.u4} auto 5%;
         }
     `,
     ToolbarContainer: styled.div`
@@ -189,6 +190,7 @@ const S = {
         border-radius: ${BorderRadius.default};
         @media screen and (max-width: 800px) {
             display: block;
+            text-align: center;
         }
     `,
     Heading: styled.div`
@@ -210,6 +212,30 @@ const S = {
             font-size: 12px;
             font-family: "Nunito Sans", sans-serif;
             padding-left: 5px;
+        }
+        @media screen and (max-width: 800px) {
+            display: none;
+        }
+    `,
+    MobileInputDiv: styled.div`
+        display: none;
+    `,
+    InputMobile: styled.input`
+        display: none;
+        @media screen and (max-width: 800px) {
+            width: 93%;
+            display: block;
+            font-size: 14px;
+            padding: 6px 6px;
+            border-width: 1px;
+            border-style: solid;
+            margin-top: 7px;
+            border-radius: 20px;
+            &::-webkit-input-placeholder {
+                font-size: 12px;
+                font-family: "Nunito Sans", sans-serif;
+                padding-left: 5px;
+            }
         }
     `,
     IconContainer: styled.span`
@@ -233,6 +259,30 @@ const S = {
             font-family: "Nunito Sans", sans-serif;
             font-weight: ${FontWeight.strong};
             border-radius: ${BorderRadius.default};
+            @media screen and (max-width: 800px) {
+                display: none;
+            }
+        }
+    `,
+    ButtonMobile: styled(Button)`
+        && {
+            display: none;
+            @media screen and (max-width: 800px) and (min-width: 450px) {
+                display: inline-block;
+                padding: ${Spacing.u2};
+                margin-left: 40%;
+                font-family: "Nunito Sans", sans-serif;
+                font-weight: ${FontWeight.strong};
+                border-radius: ${BorderRadius.default};
+            }
+            @media screen and (max-width: 450px) {
+                display: inline-block;
+                padding: ${Spacing.u2};
+                margin-left: 30%;
+                font-family: "Nunito Sans", sans-serif;
+                font-weight: ${FontWeight.strong};
+                border-radius: ${BorderRadius.default};
+            }
         }
     `,
 }
