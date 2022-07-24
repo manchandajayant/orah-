@@ -2,13 +2,13 @@
 - React 
 - Typscript 
 - Styled Components 
-- Context API (State mnagement)
+- React Context (State management)
 - Moment.js
 
 
 # Features Implemented 
 - [x] Implemented search and sort of students
-Branch [implement-search-and-sort-of-students](https://github.com/manchandajayant/orah-engineering-test/tree/implement-search-and-sort-of-students)
+- Branch [implement-search-and-sort-of-students](https://github.com/manchandajayant/orah-engineering-test/tree/implement-search-and-sort-of-students)
 
 
 - [x] Displaying a roll summary
