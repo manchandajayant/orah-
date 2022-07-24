@@ -30,7 +30,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                             obj[s.roll_state] = 1
                         }
                 })
-                console.log(obj)
+
                 return (
                     <S.Card key={index}>
                         <S.Section>
