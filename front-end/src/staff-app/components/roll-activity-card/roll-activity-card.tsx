@@ -4,23 +4,33 @@ import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 import { Activity } from "shared/models/activity"
 import moment from "moment"
-
+import {RolllStateType} from "shared/models/roll"
 interface CardProps {
     data: Activity[]
+}
+
+type obj = {
+    [key: string]: number
+}
+
+interface rollState{
+    student_id:number;
+    roll_state: RolllStateType
 }
 
 const CardComponent: React.FC<CardProps> = ({ data }) => {
     return (
         <S.CardContainer>
             {data?.map((activity: Activity, index: number) => {
-                var obj: any = {}
-                activity.entity.student_roll_states.forEach((s) => {
-                    if (s.roll_state in obj) {
-                        obj[s.roll_state] += 1
-                    } else {
-                        obj[s.roll_state] = 1
-                    }
+                var obj:obj = {} 
+                activity.entity.student_roll_states.forEach((s:rollState) => {
+                        if (s.roll_state in obj) {
+                            obj[s.roll_state] += 1
+                        } else {
+                            obj[s.roll_state] = 1
+                        }
                 })
+                console.log(obj)
                 return (
                     <S.Card key={index}>
                         <S.Section>
