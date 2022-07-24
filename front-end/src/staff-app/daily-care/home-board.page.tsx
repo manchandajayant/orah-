@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -12,23 +13,32 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 import { Images } from "assets/images"
 import { RollContext } from "context/student-context-api"
 import DropDownComponent from "staff-app/components/dropdown-sort/dropdown"
+import CenterModal from "shared/components/center-modal"
 
 export const HomeBoardPage: React.FC = () => {
+    const navigate = useNavigate()
     const { loadState, state, dispatch } = useContext(RollContext)
-
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-    const [saveRoll] = useApi<{}>({ url: "save-roll" })
+    const [saveRoll, data, loadStateSaveRoll] = useApi<{}>({ url: "save-roll" })
+    const [createARoll, setCreateARoll] = useState<Boolean>(false)
     const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
     const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
     const [order, setOrder] = useState<string>("first")
-  
+
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {
             setSortedStudentsArray(state.all_data)
             setOnLoadSort(true)
         }
     }, [loadState, state])
+
+    useEffect(() => {
+        if (loadStateSaveRoll === "loaded" && createARoll) {
+            setCreateARoll(false)
+            navigate("/staff/activity", { replace: true })
+        }
+    }, [loadStateSaveRoll])
 
     const onToolbarAction = (action: ToolbarAction) => {
         if (action === "roll") {
@@ -43,6 +53,7 @@ export const HomeBoardPage: React.FC = () => {
         if (action === "complete") {
             setIsRollMode(false)
             if (state.studentRolls.length > 0) {
+                setCreateARoll(true)
                 dispatch({ type: "reset_all_data", payload: {} })
                 saveRoll(state.studentRolls)
             }
@@ -98,7 +109,9 @@ export const HomeBoardPage: React.FC = () => {
         <>
             <S.PageContainer>
                 <S.Heading>Students List</S.Heading>
-                <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} searchForStudents={searchForStudents} />
+                {!(loadState === "error") && (
+                    <Toolbar onItemClick={onToolbarAction} ascendOrDescend={ascendOrDescend} onClickSort={onClickSort} searchForStudents={searchForStudents} />
+                )}
 
                 {loadState === "loading" && (
                     <CenteredContainer>
@@ -116,7 +129,17 @@ export const HomeBoardPage: React.FC = () => {
 
                 {loadState === "error" && (
                     <CenteredContainer>
-                        <div>Failed to load</div>
+                        <h1>Sorry, we are not able to load the data at the moment</h1>
+                        <h3>Please come back a little later</h3>
+                    </CenteredContainer>
+                )}
+
+                {loadStateSaveRoll === "loading" && createARoll && <CenterModal />}
+
+                {loadStateSaveRoll === "error" && (
+                    <CenteredContainer>
+                        <h1>Sorry, we could not record your activity</h1>
+                        <h3>Please try again later</h3>
                     </CenteredContainer>
                 )}
             </S.PageContainer>

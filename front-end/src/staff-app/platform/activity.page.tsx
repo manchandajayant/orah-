@@ -39,7 +39,8 @@ export const ActivityPage: React.FC = () => {
 
             {loadStateActivity === "error" && (
                 <CenteredContainer>
-                    <div>Failed to load</div>
+                    <h1>Sorry, we are not able to load the data at the moment</h1>
+                    <h3>Please come back a little later</h3>
                 </CenteredContainer>
             )}
         </S.Container>

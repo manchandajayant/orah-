@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
 import { RollContext } from "context/student-context-api"
@@ -39,16 +38,16 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
     return (
         <S.Overlay isActive={isActive}>
             <S.Content>
-                <div>Class Attendance</div>
+                <S.Title>Class Attendance</S.Title>
                 <div>
                     <RollStateList stateList={stateList} />
                     <div style={{ marginTop: Spacing.u6 }}>
-                        <Button color="inherit" onClick={() => onItemClick("exit")}>
+                        <S.Button color="inherit" onClick={() => onItemClick("exit")}>
                             Exit
-                        </Button>
-                        <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={() => onItemClick("complete")}>
+                        </S.Button>
+                        <S.Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={() => onItemClick("complete")}>
                             Complete
-                        </Button>
+                        </S.Button>
                     </div>
                 </div>
             </S.Content>
@@ -77,4 +76,22 @@ const S = {
         border-radius: ${BorderRadius.default};
         padding: ${Spacing.u4};
     `,
+    Title:styled.p`
+        font-size:15px;
+        @media screen and (max-width: 800px) {
+             font-size:13px;
+             margin-top:0;
+        }
+    `,
+    Button:styled.button`
+        font-size:15px;
+        background-color:transparent;
+        border:none;
+        color:#fff;
+        font-weight:bolder;
+        @media screen and (max-width: 800px) {
+             font-size:11px;
+             margin-left:26px;
+        }
+    `
 }

@@ -12,7 +12,7 @@ function App() {
             <Routes>
                 <Route path="daily-care" element={<HomeBoardPage />} />
                 <Route path="activity" element={<ActivityPage />} />
-                <Route path="*" element={<div>No Match</div>} />
+                <Route path="*" element={<HomeBoardPage />} />
             </Routes>
         </>
     )

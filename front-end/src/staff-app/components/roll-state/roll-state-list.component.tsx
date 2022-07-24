@@ -5,6 +5,7 @@ import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.c
 import { Spacing, FontWeight } from "shared/styles/styles"
 import { RolllStateType } from "shared/models/roll"
 import { RollContext } from "context/student-context-api"
+import useCheckMobileScreen from "shared/hooks/check-mobile-screen"
 
 interface Props {
     stateList: StateList[]
@@ -18,6 +19,10 @@ export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemCli
         if (onItemClick) {
             onItemClick(type)
         }
+    }
+    const isMobileForNav = useCheckMobileScreen()
+    if(isMobileForNav){
+        size = 10
     }
 
     return (

@@ -3,6 +3,8 @@ import { RolllStateType } from "shared/models/roll"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import { RollContext } from "context/student-context-api"
 import { Person } from "shared/models/person"
+import useCheckMobileScreen from "shared/hooks/check-mobile-screen"
+
 interface Props {
     initialState?: RolllStateType
     size?: number
@@ -17,6 +19,12 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     useEffect(() => {
         setRollState(student.rollValue)
     }, [student])
+
+    const isMobileForList = useCheckMobileScreen()
+    if(isMobileForList){
+        size = 30
+    }
+    console.log(size)
 
     const nextState = () => {
         const states: RolllStateType[] = ["present", "late", "absent"]
