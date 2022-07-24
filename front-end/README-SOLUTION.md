@@ -10,24 +10,24 @@
 - [x] Implemented search and sort of students
 - Branch [implement-search-and-sort-of-students](https://github.com/manchandajayant/orah-engineering-test/tree/implement-search-and-sort-of-students)
 
-![search](../screenshots/search.png)
+<img src="../screenshots/search.png" width=30% height=30%>
 
 - [x] Displaying a roll summary
 - Branch [displaying-a-roll-summary](https://github.com/manchandajayant/orah-engineering-test/tree/displaying-a-roll-summary)
 
-<img src="../screenshots/roll-sum.png" width=50% height=50%>
+<img src="../screenshots/roll-sum.png" width=30% height=30%>
 
 
 - [x] Filter students based on roll state
 - Branch [filter-students-based-on-roll-state](https://github.com/manchandajayant/orah-engineering-test/tree/filter-students-based-on-roll-state)
 
-<img src="../screenshots/filter-roll.png" width=50% height=50%>
+<img src="../screenshots/filter-roll.png" width=30% height=30%>
 
 - [x] (BONUS) Save the current roll and display it in activity page
 - Branch [Save-the-current-roll-and-display-it-in-activity-page](https://github.com/manchandajayant/orah-engineering-test/tree/Save-the-current-roll-and-display-it-in-activity-page)
 
-<img src="../screenshots/activity.png" width=50% height=50%>
-<!-- ![Filter Roll](../screenshots/activity.png) -->
+<img src="../screenshots/activity.png" width=30% height=30%>
+
 
 # Extras Implemented 
 - Not found page for a 404 route 
