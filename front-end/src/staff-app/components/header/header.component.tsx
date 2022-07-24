@@ -39,12 +39,12 @@ const NavItem: React.FC<{ to: string }> = (props) => {
 
 const S = {
     Header: styled.header`
-    display: flex;
-    align-items: center;
-    height: 56px;
-    background-color: ${Colors.gradients.dark}
-    color: #fff;
-  `,
+        display: flex;
+        align-items: center;
+        height: 56px;
+        background-color: ${Colors.gradients.dark};
+        color: #fff;
+    `,
     Navcontainer: styled.div`
         display: block;
         height: 100px;

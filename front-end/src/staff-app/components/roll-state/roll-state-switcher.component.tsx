@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { RolllStateType } from "shared/models/roll"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
-import { RollContext } from "Context/student-context-api"
+import { RollContext } from "context/student-context-api"
 import { Person } from "shared/models/person"
 interface Props {
     initialState?: RolllStateType

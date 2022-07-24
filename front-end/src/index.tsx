@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import "index.css"
 import StaffApp from "staff-app/app"
 import { GlobalStyle } from "shared/styles/global-style"
-import { RollProvider } from "Context/student-context-api"
+import { RollProvider } from "context/student-context-api"
 
 const Home: React.FC = () => {
     return (
