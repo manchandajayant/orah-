@@ -26,7 +26,15 @@ export const ActivityPage: React.FC = () => {
             )}
 
             {loadStateActivity === "loaded" && (
-                <>{state.all_activity?.activity?.length < 1 ? <div>You have no rolls at the moment</div> : <CardComponent data={state?.all_activity?.activity} />}</>
+                <>
+                    {state.all_activity?.length < 1 ? (
+                        <CenteredContainer>
+                            <div>You have no rolls at the moment</div>
+                        </CenteredContainer>
+                    ) : (
+                        <CardComponent data={state?.all_activity} />
+                    )}
+                </>
             )}
 
             {loadStateActivity === "error" && (
