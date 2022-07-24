@@ -11,7 +11,7 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { Images } from "assets/images"
 import { RollContext } from "context/student-context-api"
-import DropDownComponent from "staff-app/components/custom/Dropdown"
+import DropDownComponent from "staff-app/components/dropdown-sort/dropdown"
 
 export const HomeBoardPage: React.FC = () => {
   const store = useContext(RollContext)
@@ -19,14 +19,15 @@ export const HomeBoardPage: React.FC = () => {
 
   const [isRollMode, setIsRollMode] = useState(false)
   const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-  const [getStudents, data] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [saveRoll,responseSaveRoll,loadingState] = useApi<{}>({ url: "save-roll" })
+  // const [getStudents, data] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+  const [saveRoll, responseSaveRoll, loadingState] = useApi<{}>({ url: "save-roll" })
   const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
   const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
   const [order, setOrder] = useState<string>("first")
-  useEffect(() => {
-    void getStudents()
-  }, [getStudents])
+
+  // useEffect(() => {
+  //   void getStudents()
+  // }, [getStudents])
 
   useEffect(() => {
     if (loadState === "loaded" && state.all_data) {
@@ -44,13 +45,13 @@ export const HomeBoardPage: React.FC = () => {
   const onActiveRollAction = (action: ActiveRollAction) => {
     if (action === "exit") {
       setIsRollMode(false)
-    }  
-	if(action === "complete"){
-		setIsRollMode(false)
-		if(state.studentRolls.length > 0){
-			saveRoll(state.studentRolls)
-		}
-	}
+    }
+    if (action === "complete") {
+      setIsRollMode(false)
+      if (state.studentRolls.length > 0) {
+        saveRoll(state.studentRolls)
+      }
+    }
   }
 
   // function which recieves action
@@ -145,17 +146,17 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
     <S.ToolbarContainer>
       <S.LeftSideContainer>
         <S.Options>
-        <DropDownComponent onClickSort={onClickSort}/>
+          <DropDownComponent onClickSort={onClickSort} />
           {/* <S.Option onClick={() => onClickSort("first")}>First Name</S.Option> */}
           {/* <S.Option onClick={() => onClickSort("last")}>Last Name</S.Option> */}
         </S.Options>
         <S.IconContainer onClick={() => onClickSort(ascendOrDescend === "ascend" ? "descend" : "ascend")}>
           {/* <FontAwesomeIcon icon={ascendOrDescend === "ascend" ? "sort-alpha-down" : "sort-alpha-up"} /> */}
-          <img src={Images.sort} height={30} width={30}/>
+          <img src={Images.sort} height={30} width={30} />
         </S.IconContainer>
       </S.LeftSideContainer>
       <div>
-        <S.Input type="text" onChange={searchForStudents} placeholder={"Search for students..."}/>
+        <S.Input type="text" onChange={searchForStudents} placeholder={"Search for students..."} />
       </div>
       <S.Button onClick={() => onItemClick("roll")}>
         <img src={Images.attendance} width={"25px"} height={"25px"} />
@@ -168,7 +169,7 @@ const S = {
   PageContainer: styled.div`
     display: flex;
     flex-direction: column;
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     width: 60%;
     margin: 2% 0 10% 27%;
     @media screen and (max-width: 800px) {
@@ -179,48 +180,46 @@ const S = {
   ToolbarContainer: styled.div`
     display: flex;
     justify-content: space-between;
-    /* border: solid 1px #dfdfde;
-    border-radius: ${BorderRadius.default}; */
     align-items: center;
     color: #000;
     background-color: ${Colors.added.base};
     padding: 6px 14px;
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
     @media screen and (max-width: 800px) {
-      display:block;
+      display: block;
     }
   `,
-  Heading:styled.div`
+  Heading: styled.div`
     display: flex;
     justify-content: center;
-    font-size:26px;
+    font-size: 26px;
     margin-left: 4%;
     margin-bottom: 7%;
   `,
-  Input:styled.input`
+  Input: styled.input`
     width: 100%;
     font-size: 14px;
     padding: 6px 6px;
     border-width: 1px;
     border-style: solid;
     margin: 0;
-    border-radius:20px;
+    border-radius: 20px;
     &::-webkit-input-placeholder {
-    font-size:12px;
-    font-family: 'Nunito Sans', sans-serif;
-    padding-left:5px
-  }
+      font-size: 12px;
+      font-family: "Nunito Sans", sans-serif;
+      padding-left: 5px;
+    }
   `,
   IconContainer: styled.span`
     margin-left: 10px;
     cursor: pointer;
-    margin-top:7px;
+    margin-top: 7px;
   `,
   Options: styled.div`
     display: block;
-    margin-top:7px;
+    margin-top: 7px;
   `,
   Option: styled.span`
     display: block;
@@ -231,7 +230,7 @@ const S = {
   Button: styled(Button)`
     && {
       padding: ${Spacing.u2};
-      font-family: 'Nunito Sans', sans-serif;
+      font-family: "Nunito Sans", sans-serif;
       font-weight: ${FontWeight.strong};
       border-radius: ${BorderRadius.default};
     }
