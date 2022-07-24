@@ -14,20 +14,14 @@ import { RollContext } from "context/student-context-api"
 import DropDownComponent from "staff-app/components/dropdown-sort/dropdown"
 
 export const HomeBoardPage: React.FC = () => {
-    const store = useContext(RollContext)
     const { loadState, state } = useContext(RollContext)
 
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-    // const [getStudents, data] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-    const [saveRoll, responseSaveRoll, loadingState] = useApi<{}>({ url: "save-roll" })
+    const [saveRoll] = useApi<{}>({ url: "save-roll" })
     const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
     const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
     const [order, setOrder] = useState<string>("first")
-
-    // useEffect(() => {
-    //   void getStudents()
-    // }, [getStudents])
 
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {
@@ -230,7 +224,7 @@ const S = {
             border-width: 1px;
             border-style: solid;
             margin-top: 7px;
-            margin-bottom:17px;
+            margin-bottom: 17px;
             border-radius: 20px;
             &::-webkit-input-placeholder {
                 font-size: 12px;

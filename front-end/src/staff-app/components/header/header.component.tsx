@@ -1,27 +1,45 @@
-import React from "react"
+import React, { useState, Dispatch, SetStateAction } from "react"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import { Colors } from "shared/styles/colors"
 import { FontWeight } from "shared/styles/styles"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export const Header: React.FC = () => {
+    const [navTrueOnMWeb, setNavTrueOnMWeb] = useState<Boolean>(false)
     return (
-        <S.SideBar>
-            <S.HeaderItems>
-                <S.Logo>
-                    <img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" width={"130px"} />
-                </S.Logo>
-                <S.Navcontainer>
-                    <NavItem to="/">Home</NavItem>
-                    <NavItem to="daily-care">Daily Care</NavItem>
-                    <NavItem to="activity">Activity</NavItem>
-                </S.Navcontainer>
-            </S.HeaderItems>
-        </S.SideBar>
+        <>
+            <S.Hamburger onClick={() => setNavTrueOnMWeb(!navTrueOnMWeb)}>
+                <FontAwesomeIcon icon="bars" size="2x" />
+            </S.Hamburger>
+            <S.SideBar navTrue={navTrueOnMWeb}>
+                <S.HeaderItems>
+                    <S.Logo>
+                        <img src="https://uploads-ssl.webflow.com/5b0c6e0c417228ad9bf005d9/5fbf8b3c7c62831b52ac1de5_orahLogoArtboard%201.svg" width={"130px"} />
+                    </S.Logo>
+                    <S.Navcontainer>
+                        <NavItem to="/" setNavTrueOnMWeb={setNavTrueOnMWeb}>
+                            Home
+                        </NavItem>
+                        <NavItem to="daily-care" setNavTrueOnMWeb={setNavTrueOnMWeb}>
+                            Daily Care
+                        </NavItem>
+                        <NavItem to="activity" setNavTrueOnMWeb={setNavTrueOnMWeb}>
+                            Activity
+                        </NavItem>
+                    </S.Navcontainer>
+                </S.HeaderItems>
+            </S.SideBar>
+        </>
     )
 }
 
-const NavItem: React.FC<{ to: string }> = (props) => {
+interface ChildrenProps {
+    setNavTrueOnMWeb: Dispatch<SetStateAction<Boolean>>
+    to: string
+}
+
+const NavItem: React.FC<ChildrenProps> = (props) => {
     const activeStyle = ({ isActive }: { isActive: boolean }) => ({
         textDecoration: "none",
         fontWeight: FontWeight.strong,
@@ -31,7 +49,7 @@ const NavItem: React.FC<{ to: string }> = (props) => {
         backgroundColor: isActive ? Colors.added.siteHover : "#fff",
     })
     return (
-        <NavLink to={props.to} style={activeStyle}>
+        <NavLink to={props.to} style={activeStyle} onClick={() => props.setNavTrueOnMWeb(false)}>
             {props.children}
         </NavLink>
     )
@@ -45,6 +63,14 @@ const S = {
         background-color: ${Colors.gradients.dark};
         color: #fff;
     `,
+    Hamburger: styled.div`
+        display: none;
+        @media screen and (max-width: 800px) {
+            display: block;
+            width: 80%;
+            margin: 4%;
+        }
+    `,
     Navcontainer: styled.div`
         display: block;
         height: 100px;
@@ -53,7 +79,7 @@ const S = {
         margin: 30px;
         margin-top: 30px;
     `,
-    SideBar: styled.nav`
+    SideBar: styled.nav<{ navTrue: Boolean }>`
         background: #fff;
         top: 0;
         color: #656565;
@@ -69,7 +95,9 @@ const S = {
         transition: all 0.3s;
         border-radius: 0;
         @media screen and (max-width: 1000px) {
-            display: none;
+            display: ${(props) => (props.navTrue ? "block" : "none")};
+            width: 100%;
+            text-align: center;
         }
     `,
     HeaderItems: styled.nav`
