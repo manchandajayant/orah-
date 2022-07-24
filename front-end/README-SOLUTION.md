@@ -23,7 +23,7 @@
 
 
 # Branches 
-- Main 
+1. Main 
  - Solution
   - implement-search-and-sort-of-students
   - displaying-a-roll-summary
