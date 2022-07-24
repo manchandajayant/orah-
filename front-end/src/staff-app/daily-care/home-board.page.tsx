@@ -230,6 +230,7 @@ const S = {
             border-width: 1px;
             border-style: solid;
             margin-top: 7px;
+            margin-bottom:17px;
             border-radius: 20px;
             &::-webkit-input-placeholder {
                 font-size: 12px;
