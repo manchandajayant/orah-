@@ -33,7 +33,9 @@
 - Not found page for a 404 route 
 - Error handling messages for activities not loading, student list not loading, request to create a roll
 - Redirection after roll creation
-- Popup to show a request for roll creation
+- Popup to show a request for roll creation 
+- UI for landing page
+- Mobile responsive styling
 
 # Prodcution branch
 - main

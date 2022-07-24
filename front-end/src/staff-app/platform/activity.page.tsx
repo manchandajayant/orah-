@@ -56,7 +56,7 @@ const S = {
         margin: 2% 0 10% 27%;
         @media screen and (max-width: 800px) {
             width: 80%;
-            margin: ${Spacing.u4} auto 600px;
+            margin: ${Spacing.u4} auto 50px;
         }
     `,
     ActivityLog: styled.div`
