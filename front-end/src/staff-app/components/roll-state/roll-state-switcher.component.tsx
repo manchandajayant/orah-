@@ -14,17 +14,17 @@ interface Props {
 export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, student }) => {
     const { dispatch } = useContext(RollContext)
     // Set right data type
-    const [rollState, setRollState] = useState<any>(initialState)
+    const [rollState, setRollState] = useState<RolllStateType>(initialState)
 
     useEffect(() => {
-        setRollState(student.rollValue)
+        setRollState(student.rollValue as RolllStateType)
     }, [student])
 
     const isMobileForList = useCheckMobileScreen()
     if(isMobileForList){
         size = 30
     }
-    console.log(size)
+
 
     const nextState = () => {
         const states: RolllStateType[] = ["present", "late", "absent"]
