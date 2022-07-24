@@ -1,10 +1,12 @@
-import React from "react"
+import React,{useState,useEffect} from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { BorderRadius } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
 import { RolllStateType } from "shared/models/roll"
 import { Person } from "shared/models/person"
+import useCheckMobileScreen from "shared/hooks/check-mobile-screen"
+
 interface Props {
     type: RolllStateType
     size?: number
@@ -12,10 +14,11 @@ interface Props {
     student?: Person
 }
 export const RollStateIcon: React.FC<Props> = (props) => {
-    const { type, size = 20, onClick, student } = props
+    let { type, size = 20, onClick } = props
+
     return (
         <S.Icon size={size} border={type === "unmark"} bgColor={getBgColor(type)} clickable={Boolean(onClick)} onClick={onClick}>
-            <FontAwesomeIcon icon="check" size={size > 14 ? "lg" : "sm"} />
+            <FontAwesomeIcon icon="check" size={size > 14 ? "sm" : "xs"} />
         </S.Icon>
     )
 }
