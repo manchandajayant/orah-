@@ -14,7 +14,7 @@ import { RollContext } from "context/student-context-api"
 import DropDownComponent from "staff-app/components/dropdown-sort/dropdown"
 
 export const HomeBoardPage: React.FC = () => {
-    const { loadState, state } = useContext(RollContext)
+    const { loadState, state, dispatch } = useContext(RollContext)
 
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
@@ -22,7 +22,7 @@ export const HomeBoardPage: React.FC = () => {
     const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
     const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
     const [order, setOrder] = useState<string>("first")
-
+  
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {
             setSortedStudentsArray(state.all_data)
@@ -43,6 +43,7 @@ export const HomeBoardPage: React.FC = () => {
         if (action === "complete") {
             setIsRollMode(false)
             if (state.studentRolls.length > 0) {
+                dispatch({ type: "reset_all_data", payload: {} })
                 saveRoll(state.studentRolls)
             }
         }
@@ -50,7 +51,6 @@ export const HomeBoardPage: React.FC = () => {
 
     // function which recieves action
     const onClickSort = (action: sortAction) => {
-        // dispatch("rollCall")
         setAscendOrDescend(action)
         if (action === "ascend") {
             sortFunction(action, order)

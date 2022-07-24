@@ -1,16 +1,16 @@
-import React, { createContext, useReducer, ReactNode, useEffect, useState } from "react"
+import React, { createContext, useReducer, ReactNode, useEffect } from "react"
 import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
 import { Activity } from "shared/models/activity"
 import { LoadState } from "shared/hooks/use-api"
-import {RollInput} from "shared/models/roll"
 
 // defines types properly
 interface State {
     fetched: Person[]
     all_data: Person[]
-    all_activity: Activity[] 
-    studentRolls: any
+    all_activity: Activity[]
+    studentRolls: any /** this needs to set to its rightful state type */
+    list_of_all_students: Person[]
 }
 
 const initialState: State = {
@@ -18,16 +18,18 @@ const initialState: State = {
     all_data: [],
     studentRolls: [],
     all_activity: [],
+    list_of_all_students: [],
 }
 
-// Refactor to add action type so that the action can be without a payload -- fixed, remove payload from rol calls
+// Refactor to add action type so that the action can be without a payload -- fixed, remove payload from roll calls
+// To fix types of student_rolls to its righful data
 export type Action =
-    | { type: "all_data"; payload: Person[]}
+    | { type: "all_data"; payload: Person[] }
     | { type: "student_rolls"; payload: {} }
     | { type: "all_activity"; payload: Activity[] }
+    | { type: "reset_all_data"; payload?: {} }
     | { type: "present" | "absent" | "late" | "all" | "unmark"; payload?: {} }
 
-export type sortedDataArray = Person[] | undefined
 export type Dispatch = (action: Action) => void
 
 export interface RollContext {
@@ -38,13 +40,12 @@ export interface RollContext {
     loadStateActivityCall: () => void
 }
 
-// Change this to define types properly
 export const RollContext = createContext<RollContext>({} as RollContext)
 
 const rollReducer = (state: State, action: Action) => {
     switch (action.type) {
         case "all_data":
-            return { ...state, all_data: action.payload, fetched: action.payload }
+            return { ...state, all_data: action.payload, fetched: action.payload, list_of_all_students: action.payload }
         case "all":
             return { ...state, all_data: state.fetched }
         case "all_activity":
@@ -57,7 +58,7 @@ const rollReducer = (state: State, action: Action) => {
                 return obj.rollValue === action.type
             })
             if (filtered.length) {
-                return { ...state, all_data: filtered  }
+                return { ...state, all_data: filtered }
             }
             return state
         case "student_rolls":
@@ -74,17 +75,18 @@ const rollReducer = (state: State, action: Action) => {
                             val.student_id === m.student_id ? { ...m, roll_state: val.roll_state } : m
                         ),
                         all_data: state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
-                        fetched:state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
+                        fetched: state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
                     }
                 }
             }
-            // console.log(state.all_data)
             return {
                 ...state,
                 studentRolls: [...state.studentRolls, val],
-                all_data:  state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
-                fetched:  state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
+                all_data: state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
+                fetched: state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
             }
+        case "reset_all_data":
+            return { ...state, all_data: state.list_of_all_students }
         default:
             return state
     }
@@ -92,7 +94,6 @@ const rollReducer = (state: State, action: Action) => {
 
 export const RollProvider = ({ children }: { children: ReactNode }) => {
     const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-    // const [sortedDataArray, setsortedDataArray] = useState<Person[] | undefined>([])
     const [state, dispatch] = useReducer(rollReducer, initialState)
     const [getActivities, dataActivity, loadStateActivity] = useApi<{ activity: Activity[] }>({ url: "get-activities" })
 
@@ -105,8 +106,8 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
             let students: Person[] = data?.students.sort((a: Person, b: Person): number => {
                 return a.first_name < b.first_name ? -1 : 1
             })
-            let newStudentsArray:Person[] = students?.map((student: Person) => ({ ...student, rollValue: "unmark" }))
-            dispatch({ type: "all_data", payload:  newStudentsArray  })
+            let newStudentsArray: Person[] = students?.map((student: Person) => ({ ...student, rollValue: "unmark" }))
+            dispatch({ type: "all_data", payload: newStudentsArray })
         }
     }, [loadState])
 
