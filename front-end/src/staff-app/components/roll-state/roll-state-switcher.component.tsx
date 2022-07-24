@@ -10,7 +10,7 @@ interface Props {
     student: Person
 }
 export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, student }) => {
-    const { loadState, state, dispatch } = useContext(RollContext)
+    const { dispatch } = useContext(RollContext)
     // Set right data type
     const [rollState, setRollState] = useState<any>(initialState)
 

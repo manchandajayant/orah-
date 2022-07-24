@@ -3,30 +3,28 @@ import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
 import { Activity } from "shared/models/activity"
 import { LoadState } from "shared/hooks/use-api"
+import {RollInput} from "shared/models/roll"
 
-interface Student {
-    students?: Person[]
-}
 // defines types properly
 interface State {
-    fetched: any
-    all_data: any
-    all_activity: any
+    fetched: Person[]
+    all_data: Person[]
+    all_activity: Activity[] 
     studentRolls: any
 }
 
 const initialState: State = {
-    fetched: {},
-    all_data: {},
+    fetched: [],
+    all_data: [],
     studentRolls: [],
-    all_activity: {},
+    all_activity: [],
 }
 
 // Refactor to add action type so that the action can be without a payload -- fixed, remove payload from rol calls
 export type Action =
-    | { type: "all_data"; payload: {} }
+    | { type: "all_data"; payload: Person[]}
     | { type: "student_rolls"; payload: {} }
-    | { type: "all_activity"; payload: Activity[] | undefined }
+    | { type: "all_activity"; payload: Activity[] }
     | { type: "present" | "absent" | "late" | "all" | "unmark"; payload?: {} }
 
 export type sortedDataArray = Person[] | undefined
@@ -46,21 +44,20 @@ export const RollContext = createContext<RollContext>({} as RollContext)
 const rollReducer = (state: State, action: Action) => {
     switch (action.type) {
         case "all_data":
-            console.log(action.payload)
             return { ...state, all_data: action.payload, fetched: action.payload }
         case "all":
-            return { ...state, all_data: { students: state.fetched.students } }
+            return { ...state, all_data: state.fetched }
         case "all_activity":
-            return { ...state, all_activity: { activity: action.payload } }
+            return { ...state, all_activity: action.payload }
         case "present":
         case "absent":
         case "late":
-            let all_students = state.fetched.students
+            let all_students = state.fetched
             let filtered = all_students.filter((obj: Person) => {
                 return obj.rollValue === action.type
             })
             if (filtered.length) {
-                return { ...state, all_data: { students: filtered } }
+                return { ...state, all_data: filtered  }
             }
             return state
         case "student_rolls":
@@ -76,8 +73,8 @@ const rollReducer = (state: State, action: Action) => {
                         studentRolls: state.studentRolls.map((m: { student_id: number; roll_state: string }) =>
                             val.student_id === m.student_id ? { ...m, roll_state: val.roll_state } : m
                         ),
-                        all_data: { students: state?.all_data.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
-                        fetched: { students: state?.fetched.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
+                        all_data: state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
+                        fetched:state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
                     }
                 }
             }
@@ -85,8 +82,8 @@ const rollReducer = (state: State, action: Action) => {
             return {
                 ...state,
                 studentRolls: [...state.studentRolls, val],
-                all_data: { students: state?.all_data.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
-                fetched: { students: state?.fetched.students.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)) },
+                all_data:  state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
+                fetched:  state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
             }
         default:
             return state
@@ -104,12 +101,12 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
     }, [getStudents])
 
     useEffect(() => {
-        if (loadState === "loaded") {
-            let students: Person[] | undefined = data?.students.sort((a: Person, b: Person): number => {
+        if (loadState === "loaded" && data) {
+            let students: Person[] = data?.students.sort((a: Person, b: Person): number => {
                 return a.first_name < b.first_name ? -1 : 1
             })
-            let newStudentsArray = students?.map((student: {}) => ({ ...student, rollValue: "unmark" }))
-            dispatch({ type: "all_data", payload: { students: newStudentsArray } })
+            let newStudentsArray:Person[] = students?.map((student: Person) => ({ ...student, rollValue: "unmark" }))
+            dispatch({ type: "all_data", payload:  newStudentsArray  })
         }
     }, [loadState])
 
@@ -119,7 +116,7 @@ export const RollProvider = ({ children }: { children: ReactNode }) => {
 
     // Fix state for activity since UI shows older state first and then updates it
     useEffect(() => {
-        if (loadStateActivity === "loaded") {
+        if (loadStateActivity === "loaded" && dataActivity) {
             dispatch({ type: "all_activity", payload: dataActivity?.activity })
         }
     }, [loadStateActivity, getActivities])

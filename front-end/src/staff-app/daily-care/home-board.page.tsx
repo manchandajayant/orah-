@@ -31,7 +31,7 @@ export const HomeBoardPage: React.FC = () => {
 
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {
-            setSortedStudentsArray(state.all_data.students)
+            setSortedStudentsArray(state.all_data)
             setOnLoadSort(true)
         }
     }, [loadState, state])
@@ -90,13 +90,13 @@ export const HomeBoardPage: React.FC = () => {
     const searchForStudents = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Fix for names with spaces
         if (e.target.value.length >= 1) {
-            let filtered: Person[] | undefined = state?.all_data?.students.filter((person: Person) => {
+            let filtered: Person[] | undefined = state?.all_data?.filter((person: Person) => {
                 let str: string = person.first_name.toLocaleLowerCase() + person.last_name.toLocaleLowerCase()
                 return str.includes(e.target.value.toLocaleLowerCase())
             })
             setSortedStudentsArray(filtered)
         } else {
-            setSortedStudentsArray(state?.all_data?.students)
+            setSortedStudentsArray(state?.all_data)
         }
     }
 
