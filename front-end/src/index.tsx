@@ -7,27 +7,27 @@ import { GlobalStyle } from "shared/styles/global-style"
 import { RollProvider } from "context/student-context-api"
 
 const Home: React.FC = () => {
-  return (
-    <div className="app">
-      <header className="app-header">
-        <p>Engineering Test</p>
-        <Link to="staff/daily-care">Staff</Link>
-      </header>
-    </div>
-  )
+    return (
+        <div className="app">
+            <header className="app-header">
+                <p>Engineering Test</p>
+                <Link to="staff/daily-care">Staff</Link>
+            </header>
+        </div>
+    )
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <GlobalStyle />
-    <BrowserRouter>
-      <RollProvider>
-        <Routes>
-          <Route path="/" element={<Home>Engineering Test</Home>} />
-          <Route path="staff/*" element={<StaffApp />} />
-        </Routes>
-      </RollProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+        <GlobalStyle />
+        <BrowserRouter>
+            <RollProvider>
+                <Routes>
+                    <Route path="/" element={<Home>Engineering Test</Home>} />
+                    <Route path="staff/*" element={<StaffApp />} />
+                </Routes>
+            </RollProvider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
 )
