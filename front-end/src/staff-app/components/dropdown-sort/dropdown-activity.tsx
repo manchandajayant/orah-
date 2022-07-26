@@ -76,7 +76,7 @@ const S = {
         cursor: pointer;
     `,
     DropDownListContainer: styled.div`
-        position: fixed;
+        position: absolute;
         width: inherit;
         cursor: pointer;
     `,
