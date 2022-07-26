@@ -14,10 +14,10 @@ interface Props {
 export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, student }) => {
     const { dispatch } = useContext(RollContext)
     // Set right data type
-    const [rollState, setRollState] = useState<any>(initialState)
+    const [rollState, setRollState] = useState<RolllStateType>(initialState)
 
     useEffect(() => {
-        setRollState(student.rollValue)
+        setRollState(student.rollValue as RolllStateType)
     }, [student])
 
     // check for mobile screen

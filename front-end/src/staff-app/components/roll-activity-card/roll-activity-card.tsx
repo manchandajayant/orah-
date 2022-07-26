@@ -4,9 +4,18 @@ import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 import { Activity } from "shared/models/activity"
 import moment from "moment"
-
+import {RolllStateType} from "shared/models/roll"
 interface CardProps {
     data: Activity[]
+}
+
+type obj = {
+    [key: string]: number
+}
+
+interface rollState{
+    student_id:number;
+    roll_state: RolllStateType
 }
 
 const CardComponent: React.FC<CardProps> = ({ data }) => {
@@ -21,6 +30,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                         obj[s.roll_state] = 1
                     }
                 })
+
                 return (
                     <S.Card key={index}>
                         <S.Section>

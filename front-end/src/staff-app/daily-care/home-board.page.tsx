@@ -95,7 +95,7 @@ export const HomeBoardPage: React.FC = () => {
         // Fix for names with spaces
         if (e.target.value.length >= 1) {
             let filtered: Person[] | undefined = state?.all_data?.filter((person: Person) => {
-                let str: string = person.first_name.toLocaleLowerCase() + person.last_name.toLocaleLowerCase()
+                let str: string = person.first_name.toLocaleLowerCase()+ " " +person.last_name.toLocaleLowerCase()
                 return str.includes(e.target.value.toLocaleLowerCase())
             })
             setSortedStudentsArray(filtered)
@@ -148,7 +148,7 @@ export const HomeBoardPage: React.FC = () => {
 }
 
 type ToolbarAction = "roll" | "sort"
-export type sortAction = "ascend" | "descend" | "first" | "last" | "First Name" | "Last Name"
+export type sortAction = "ascend" | "descend" | "first" | "last"
 
 interface ToolbarProps {
     ascendOrDescend: string

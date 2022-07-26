@@ -38,7 +38,7 @@
 - Mobile responsive styling
 
 # Other cases 
-- Search Query with a space does not work.
+- [x] Search Query with a space does not work.
 - Mobile Sidebar collapse button.
 - A page for when internet is not working.
 - A popup for when user has not completed any rolls and they press complete.
@@ -59,3 +59,4 @@
 - reset-state
 - fixing-type-bugs
 - any-last-UI-or-function-change
+- remove-all-any-type
