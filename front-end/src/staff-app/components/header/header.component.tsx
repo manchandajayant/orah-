@@ -1,6 +1,7 @@
 import React, { useState, Dispatch, SetStateAction } from "react"
-import styled from "styled-components"
 import { NavLink } from "react-router-dom"
+
+import styled from "styled-components"
 import { Colors } from "shared/styles/colors"
 import { FontWeight } from "shared/styles/styles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

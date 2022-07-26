@@ -1,7 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
-import { BorderRadius } from "shared/styles/styles"
+
 import styled from "styled-components"
+import { BorderRadius } from "shared/styles/styles"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const CenterModal = () => {
     return (

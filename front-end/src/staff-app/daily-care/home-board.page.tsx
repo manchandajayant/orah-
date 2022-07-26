@@ -1,23 +1,27 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
+
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
+import { Images } from "assets/images"
+
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
-import { Person } from "shared/models/person"
-import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
-import { Images } from "assets/images"
-import { RollContext } from "context/student-context-api"
 import DropDownComponent from "staff-app/components/dropdown-sort/dropdown"
 import CenterModal from "shared/components/center-modal"
+
+import { Person } from "shared/models/person"
+import { useApi } from "shared/hooks/use-api"
+import { RollContext } from "context/student-context-api"
+
 
 export const HomeBoardPage: React.FC = () => {
     const navigate = useNavigate()
     const { loadState, state, dispatch } = useContext(RollContext)
-    
+
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
     const [createARoll, setCreateARoll] = useState<Boolean>(false)
@@ -27,7 +31,6 @@ export const HomeBoardPage: React.FC = () => {
     const [noResultsFound, setNoResultsFound] = useState<Boolean>(false)
 
     const [saveRoll, data, loadStateSaveRoll] = useApi<{}>({ url: "save-roll" })
-
 
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {

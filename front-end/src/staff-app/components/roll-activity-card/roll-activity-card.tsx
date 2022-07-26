@@ -1,10 +1,13 @@
 import React from "react"
+import moment from "moment"
+
 import styled from "styled-components"
 import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
+
 import { Activity } from "shared/models/activity"
-import moment from "moment"
-import {RolllStateType} from "shared/models/roll"
+import { RolllStateType } from "shared/models/roll"
+
 interface CardProps {
     data: Activity[]
 }

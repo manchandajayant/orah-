@@ -1,10 +1,17 @@
+// External Utilites
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
-import "index.css"
-import StaffApp from "staff-app/app"
+
+// Global style
 import { GlobalStyle } from "shared/styles/global-style"
+import "index.css"
+
+// Context - store 
 import { RollProvider } from "context/student-context-api"
+
+// Route components
+import StaffApp from "staff-app/app"
 import NotFoundComponent from "staff-app/error-pages/404"
 
 const Home: React.FC = () => {

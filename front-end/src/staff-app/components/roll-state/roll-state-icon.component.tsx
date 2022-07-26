@@ -1,11 +1,12 @@
-import React,{useState,useEffect} from "react"
+import React from "react"
+
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { BorderRadius } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
+
 import { RolllStateType } from "shared/models/roll"
 import { Person } from "shared/models/person"
-import useCheckMobileScreen from "shared/hooks/check-mobile-screen"
 
 interface Props {
     type: RolllStateType

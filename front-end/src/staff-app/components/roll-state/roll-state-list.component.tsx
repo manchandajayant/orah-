@@ -1,10 +1,13 @@
 import React, { useContext } from "react"
+
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import { Spacing, FontWeight } from "shared/styles/styles"
+
 import { RolllStateType } from "shared/models/roll"
 import { RollContext } from "context/student-context-api"
+
+import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import useCheckMobileScreen from "shared/hooks/check-mobile-screen"
 
 interface Props {

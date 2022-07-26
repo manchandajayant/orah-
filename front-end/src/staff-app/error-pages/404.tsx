@@ -1,7 +1,9 @@
 import React from "react"
+import { Link } from "react-router-dom"
+
 import { Images } from "assets/images"
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
-import { Link } from "react-router-dom"
+
 
 const NotFoundComponent = () => {
     return (
