@@ -20,7 +20,7 @@ import { RollContext } from "context/student-context-api"
 
 export const HomeBoardPage: React.FC = () => {
     const navigate = useNavigate()
-    const { loadState, state, dispatch } = useContext(RollContext)
+    const { loadState, state, dispatch } = useContext<RollContext>(RollContext)
 
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)

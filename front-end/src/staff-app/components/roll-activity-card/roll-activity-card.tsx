@@ -6,68 +6,53 @@ import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 
 import { Activity } from "shared/models/activity"
-import { RolllStateType } from "shared/models/roll"
 
 interface CardProps {
-    data: Activity[]
+    data: Activity
 }
 
 type obj = {
     [key: string]: number
 }
 
-interface rollState{
-    student_id:number;
-    roll_state: RolllStateType
-}
-
 const CardComponent: React.FC<CardProps> = ({ data }) => {
+    var obj: obj = {}
+    data?.entity?.student_roll_states.forEach((s) => {
+        if (s.roll_state in obj) {
+            obj[s.roll_state] += 1
+        } else {
+            obj[s.roll_state] = 1
+        }
+    })
     return (
         <S.CardContainer>
-            {data?.map((activity: Activity, index: number) => {   {/* Calculate total for each roll state */}
-                var obj: any = {}
-                activity.entity.student_roll_states.forEach((s) => {
-                    if (s.roll_state in obj) {
-                        obj[s.roll_state] += 1
-                    } else {
-                        obj[s.roll_state] = 1
-                    }
-                })
-
-                return (
-                    <S.Card key={index}>
-                        <S.Section>
-                            <S.Name>{activity.entity.name}</S.Name>
-                            <S.Total>Total: {activity.entity.student_roll_states.length}</S.Total>
-                            <S.Date>{moment(activity.date).format("MMMM Do, YYYY") + "  " + moment(activity.date).format("hh:mm A")}</S.Date>
-                        </S.Section>
-                        <S.SectionCircles>
-                            <S.CircleContainer>
-
-                                <S.Circles color={Colors.gradients.colorsForRoll[0]}></S.Circles>
-                                <S.CircleNumber>
-                                    {/* <S.Span>Present </S.Span>  */}
-                                    {obj.present ? obj.present : "--"}
-                                </S.CircleNumber>
-                            </S.CircleContainer>
-                            <S.CircleContainer>
-                                <S.Circles color={Colors.gradients.colorsForRoll[1]}></S.Circles>
-                                <S.CircleNumber>
-                                    {/* <S.Span>Late </S.Span> */}
-                                    {obj.late ? obj.late : "--"}
-                                </S.CircleNumber>
-                            </S.CircleContainer>
-                            <S.CircleContainer>
-                                <S.Circles color={Colors.gradients.colorsForRoll[2]}></S.Circles>
-                                <S.CircleNumber>
-                                    {/* <S.Span>Absent </S.Span> */}
-                                    {obj.absent ? obj.absent : "--"}
-                                </S.CircleNumber>
-                            </S.CircleContainer>
-                        </S.SectionCircles>
-                    </S.Card>
-                )
-            })}
+            <S.Card>
+                <S.Section>
+                    <S.Name>{data.entity.name}</S.Name>
+                    <S.Total>Total: {data.entity.student_roll_states.length}</S.Total>
+                    <S.Date>{moment(data.date).format("MMMM Do, YYYY") + "  " + moment(data.date).format("hh:mm A")}</S.Date>
+                </S.Section>
+                <S.SectionCircles>
+                    <S.CircleContainer>
+                        <S.Circles color={Colors.gradients.colorsForRoll[0]}></S.Circles>
+                        <S.CircleNumber>
+                            {obj.present ? obj.present : "--"}
+                        </S.CircleNumber>
+                    </S.CircleContainer>
+                    <S.CircleContainer>
+                        <S.Circles color={Colors.gradients.colorsForRoll[1]}></S.Circles>
+                        <S.CircleNumber>
+                            {obj.late ? obj.late : "--"}
+                        </S.CircleNumber>
+                    </S.CircleContainer>
+                    <S.CircleContainer>
+                        <S.Circles color={Colors.gradients.colorsForRoll[2]}></S.Circles>
+                        <S.CircleNumber>
+                            {obj.absent ? obj.absent : "--"}
+                        </S.CircleNumber>
+                    </S.CircleContainer>
+                </S.SectionCircles>
+            </S.Card>
         </S.CardContainer>
     )
 }
@@ -76,6 +61,7 @@ const S = {
     CardContainer: styled.div`
         width: 100%;
         height: auto;
+        margin-top:7%;
         @media screen and (max-width: 800px) {
             width: 100%;
         }
@@ -91,7 +77,7 @@ const S = {
         border: 1px solid #e5e5e5;
         margin-bottom: 3%;
         @media screen and (max-width: 800px) {
-            display:block;
+            display: block;
         }
     `,
     Section: styled.div`
@@ -102,33 +88,33 @@ const S = {
         height: auto;
         line-height: ${Spacing.u10};
         font-weight: bold;
-        font-size:22px;
+        font-size: 22px;
         margin: ${Spacing.u5} ${Spacing.u5} ${Spacing.u1} ${Spacing.u5};
         @media screen and (max-width: 800px) {
             margin: ${Spacing.u5} ${Spacing.u5} 0 ${Spacing.u5};
-            font-size:14px;
+            font-size: 14px;
         }
     `,
     Date: styled.div`
         font-family: "Nunito Sans", sans-serif;
         margin: ${Spacing.u3} ${Spacing.u5};
-        font-size:14px;
+        font-size: 14px;
         @media screen and (max-width: 800px) {
-            font-size:12px;
+            font-size: 12px;
         }
     `,
     SectionCircles: styled.div`
         font-family: "Nunito Sans", sans-serif;
         @media screen and (max-width: 800px) {
-            display:flex;
+            display: flex;
         }
     `,
     Total: styled.div`
         font-family: "Nunito Sans", sans-serif;
         margin-left: ${Spacing.u5};
-        font-size:16px;
+        font-size: 16px;
         @media screen and (max-width: 800px) {
-            font-size:12px;
+            font-size: 12px;
         }
     `,
     CircleContainer: styled.div`
@@ -138,9 +124,9 @@ const S = {
         font-family: "Nunito Sans", sans-serif;
         margin: 15px;
         color: #808080;
-        font-size:14px;
+        font-size: 14px;
         @media screen and (max-width: 800px) {
-            font-size:12px;
+            font-size: 12px;
             margin: ${Spacing.u2} 0 0 ${Spacing.u3};
         }
     `,

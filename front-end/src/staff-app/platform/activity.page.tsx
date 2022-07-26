@@ -1,23 +1,32 @@
 // External utilities
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import styled from "styled-components"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 
 import { RollContext } from "context/student-context-api"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Activity } from "shared/models/activity"
 
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
 import CardComponent from "staff-app/components/roll-activity-card/roll-activity-card"
+import DropdownActivity from "staff-app/components/dropdown-sort/dropdown-activity"
+
 
 export const ActivityPage: React.FC = () => {
-    const { loadStateActivity, state, loadStateActivityCall } = useContext(RollContext)
+    const { loadStateActivity, state, loadStateActivityCall } = useContext<RollContext>(RollContext)
+    const [activity, setActivity] = useState<Activity>({} as Activity)
 
     useEffect(() => {
         if (loadStateActivity) {
             void loadStateActivityCall()
         }
     }, [])
+
+    const onclickActivitySelect = (action:string) =>{
+        let filteredValue = state?.all_activity.filter((obj:Activity)=>action === obj.entity.name)
+        setActivity(filteredValue[0])
+    }
 
     return (
         <S.Container>
@@ -36,7 +45,11 @@ export const ActivityPage: React.FC = () => {
                             <div>You have no rolls at the moment</div>
                         </CenteredContainer>
                     ) : (
-                        <CardComponent data={state?.all_activity} />
+                        <>
+                            <DropdownActivity data={state?.all_activity} onclickActivitySelect={onclickActivitySelect} />
+
+                            {Object.keys(activity).length > 1 && <CardComponent data={activity} />}
+                        </>
                     )}
                 </>
             )}
