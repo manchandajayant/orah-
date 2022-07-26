@@ -20,11 +20,11 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
         setRollState(student.rollValue)
     }, [student])
 
+    // check for mobile screen
     const isMobileForList = useCheckMobileScreen()
     if(isMobileForList){
         size = 30
     }
-    console.log(size)
 
     const nextState = () => {
         const states: RolllStateType[] = ["present", "late", "absent"]

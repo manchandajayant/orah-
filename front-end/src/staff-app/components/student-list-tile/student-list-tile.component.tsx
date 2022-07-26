@@ -32,7 +32,6 @@ const S = {
         margin-top: 0.5px;
         padding-right: ${Spacing.u2};
         display: flex;
-        /* border-bottom: solid 1px #dee2e6; */
         background-color: #fff;
         transition: box-shadow 0.3s ease-in-out;
         cursor: pointer;

@@ -12,7 +12,7 @@ interface CardProps {
 const CardComponent: React.FC<CardProps> = ({ data }) => {
     return (
         <S.CardContainer>
-            {data?.map((activity: Activity, index: number) => {
+            {data?.map((activity: Activity, index: number) => {   {/* Calculate total for each roll state */}
                 var obj: any = {}
                 activity.entity.student_roll_states.forEach((s) => {
                     if (s.roll_state in obj) {

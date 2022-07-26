@@ -20,6 +20,7 @@ export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemCli
             onItemClick(type)
         }
     }
+    // check for mobile screen
     const isMobileForNav = useCheckMobileScreen()
     if(isMobileForNav){
         size = 10
