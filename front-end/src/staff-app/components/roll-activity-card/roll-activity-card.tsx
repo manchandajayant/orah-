@@ -40,23 +40,25 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                         </S.Section>
                         <S.SectionCircles>
                             <S.CircleContainer>
+
                                 <S.Circles color={Colors.gradients.colorsForRoll[0]}></S.Circles>
                                 <S.CircleNumber>
-                                    <S.Span>Present : </S.Span> {obj.present}
+                                    {/* <S.Span>Present </S.Span>  */}
+                                    {obj.present ? obj.present : "--"}
                                 </S.CircleNumber>
                             </S.CircleContainer>
                             <S.CircleContainer>
                                 <S.Circles color={Colors.gradients.colorsForRoll[1]}></S.Circles>
                                 <S.CircleNumber>
-                                    <S.Span>Late : </S.Span>
-                                    {obj.late}
+                                    {/* <S.Span>Late </S.Span> */}
+                                    {obj.late ? obj.late : "--"}
                                 </S.CircleNumber>
                             </S.CircleContainer>
                             <S.CircleContainer>
                                 <S.Circles color={Colors.gradients.colorsForRoll[2]}></S.Circles>
                                 <S.CircleNumber>
-                                    <S.Span>Absent : </S.Span>
-                                    {obj.absent}
+                                    {/* <S.Span>Absent </S.Span> */}
+                                    {obj.absent ? obj.absent : "--"}
                                 </S.CircleNumber>
                             </S.CircleContainer>
                         </S.SectionCircles>
