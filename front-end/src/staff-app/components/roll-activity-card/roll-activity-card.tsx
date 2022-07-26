@@ -6,6 +6,7 @@ import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 
 import { Activity } from "shared/models/activity"
+import BarChart from "shared/components/bar-chart-activity"
 
 interface CardProps {
     data: Activity
@@ -24,6 +25,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
             obj[s.roll_state] = 1
         }
     })
+
     return (
         <S.CardContainer>
             <S.Card>
@@ -33,7 +35,8 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                     <S.Date>{moment(data.date).format("MMMM Do, YYYY") + "  " + moment(data.date).format("hh:mm A")}</S.Date>
                 </S.Section>
                 <S.SectionCircles>
-                    <S.CircleContainer>
+                    <BarChart data={obj}/>
+                    {/* <S.CircleContainer>
                         <S.Circles color={Colors.gradients.colorsForRoll[0]}></S.Circles>
                         <S.CircleNumber>
                             {obj.present ? obj.present : "--"}
@@ -50,7 +53,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
                         <S.CircleNumber>
                             {obj.absent ? obj.absent : "--"}
                         </S.CircleNumber>
-                    </S.CircleContainer>
+                    </S.CircleContainer> */}
                 </S.SectionCircles>
             </S.Card>
         </S.CardContainer>
@@ -59,8 +62,7 @@ const CardComponent: React.FC<CardProps> = ({ data }) => {
 
 const S = {
     CardContainer: styled.div`
-        width: 100%;
-        height: auto;
+        width: 100%; 
         margin-top:7%;
         @media screen and (max-width: 800px) {
             width: 100%;
@@ -68,8 +70,8 @@ const S = {
     `,
     Card: styled.div`
         background-color: #fff;
-        width: 100%;
-        height: auto;
+        /* height: 600px; */
+        /* width: 100%; */
         border-radius: ${BorderRadius.default};
         font-family: "Nunito Sans", sans-serif;
         display: flex;

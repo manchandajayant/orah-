@@ -29,13 +29,13 @@ function getBgColor(type: RolllStateType) {
         case "unmark":
             return "#fff"
         case "present":
-            return "#13943b"
+            return "#76BA99"
         case "absent":
-            return "#9b9b9b"
+            return "#F37878"
         case "late":
-            return "#f5a623"
+            return "#FFDCAE"
         default:
-            return "#13943b"
+            return "#76BA99"
     }
 }
 
