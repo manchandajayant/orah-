@@ -17,13 +17,17 @@ import CenterModal from "shared/components/center-modal"
 export const HomeBoardPage: React.FC = () => {
     const navigate = useNavigate()
     const { loadState, state, dispatch } = useContext(RollContext)
+    
     const [isRollMode, setIsRollMode] = useState(false)
     const [onLoadSort, setOnLoadSort] = useState<Boolean>(false)
-    const [saveRoll, data, loadStateSaveRoll] = useApi<{}>({ url: "save-roll" })
     const [createARoll, setCreateARoll] = useState<Boolean>(false)
     const [sortedStudentsArray, setSortedStudentsArray] = useState<Person[] | undefined>([])
     const [ascendOrDescend, setAscendOrDescend] = useState<string>("ascend")
     const [order, setOrder] = useState<string>("first")
+    const [noResultsFound, setNoResultsFound] = useState<Boolean>(false)
+
+    const [saveRoll, data, loadStateSaveRoll] = useApi<{}>({ url: "save-roll" })
+
 
     useEffect(() => {
         if (loadState === "loaded" && state.all_data) {
@@ -103,7 +107,13 @@ export const HomeBoardPage: React.FC = () => {
             setSortedStudentsArray(state?.all_data)
         }
     }
-
+    useEffect(()=>{
+        if(sortedStudentsArray && sortedStudentsArray?.length  < 1){
+            setNoResultsFound(true)
+        } else {
+            setNoResultsFound(false)
+        }    
+    },[sortedStudentsArray])
     return (
         <>
             <S.PageContainer>
@@ -130,6 +140,12 @@ export const HomeBoardPage: React.FC = () => {
                     <CenteredContainer>
                         <h1>Sorry, we are not able to load the data at the moment</h1>
                         <h3>Please come back a little later</h3>
+                    </CenteredContainer>
+                )}
+
+                {noResultsFound  && (
+                    <CenteredContainer>
+                        <h3>No student found by this name.</h3>
                     </CenteredContainer>
                 )}
 
