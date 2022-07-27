@@ -20,24 +20,22 @@ type Props = {
 // TODO: Fix all types in this component
 const BarChart: React.FC<Props> = ({ data }) => {
     let chartRef = useRef<any>(null)
-    let present = data.present ? data.present : 0
-    let absent = data.absent ? data.absent : 0
-    let late = data.late ? data.late : 0
+    
     useEffect(() => {
         if (null !== chartRef.current) {
             const ctx: any = chartRef.current?.getContext("2d")
             myChart = new Chart(ctx, {
                 type: "doughnut",
                 data: {
-                    labels: Object.keys(data)?.map((el) => el),
+                    labels: ["present", "absent", "late"],
                     datasets: [
                         {
                             label: "Present",
-                            data: [present, late, absent],
-                            borderColor: config.borderColor.map((el) => el),
-                            backgroundColor: config.backgroundColor.map((el) => el),
+                            data: [data?.present, data?.absent, data?.late],
+                            borderColor: config.borderColor,
+                            backgroundColor: config.backgroundColor,
                             borderWidth: 1,
-                            hoverOffset: 4,
+                            hoverOffset: 8,
                         },
                     ],
                 },
