@@ -6,13 +6,13 @@ import { Colors } from "shared/styles/colors"
 import { Spacing, BorderRadius } from "shared/styles/styles"
 
 import { Activity } from "shared/models/activity"
-import BarChart from "shared/components/bar-chart-activity"
+import BarChart from "shared/components/donought-chart-activity"
 
 interface CardProps {
     data: Activity
 }
 
-type obj = {
+export type obj = {
     [key: string]: number
 }
 

@@ -2,28 +2,29 @@ import React, { useRef, useEffect } from "react"
 import { Chart, registerables } from "chart.js"
 
 import styled from "styled-components"
-import { Colors } from "shared/styles/colors"
+import {obj} from "staff-app/components/roll-activity-card/roll-activity-card"
 
 Chart.register(...registerables)
 
 
-var myChart: any = undefined
+var myChart = {} as Chart
 var config = {
     backgroundColor: ["#76BA99", "#F37878", "#FFDCAE"],
     borderColor:["#76BA99", "#F37878", "#FFDCAE"]
 }
 
 type Props = {
-    [key: string]: any
+    [key: string]: obj 
 }
 
 // TODO: Fix all types in this component
 const BarChart: React.FC<Props> = ({ data }) => {
-    let chartRef = useRef<any>(null)
+    let chartRef = useRef<HTMLCanvasElement>(null)
     
     useEffect(() => {
         if (null !== chartRef.current) {
-            const ctx: any = chartRef.current?.getContext("2d")
+            const ctx = chartRef.current?.getContext("2d")
+            if (ctx == null) throw new Error('Could not get context');
             myChart = new Chart(ctx, {
                 type: "doughnut",
                 data: {
