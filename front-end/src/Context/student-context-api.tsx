@@ -4,13 +4,14 @@ import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
 import { Activity } from "shared/models/activity"
 import { LoadState } from "shared/hooks/use-api"
+import { RolllStateType } from "shared/models/roll"
 
 // defines types properly
 interface State {
     fetched: Person[]
     all_data: Person[]
     all_activity: Activity[]
-    studentRolls: any /** this needs to set to its rightful state type */
+    studentRolls: { student_id: number; roll_state: RolllStateType }[]
     list_of_all_students: Person[]
 }
 
@@ -64,15 +65,15 @@ const rollReducer = (state: State, action: Action) => {
             return state
         case "student_rolls":
             // change to correct type
-            let val: any = action.payload
-            let arr = state.studentRolls.filter((v: { student_id: number; roll_state: string }) => v.student_id == val.student_id)
+            let val = action.payload as { student_id: number; roll_state: RolllStateType }
+            let arr = state.studentRolls.filter((v: { student_id: number; roll_state: RolllStateType }) => v.student_id == val.student_id)
             if (arr.length) {
                 if (val.roll_state === arr[0]?.roll_state) {
                     return state
                 } else {
                     return {
                         ...state,
-                        studentRolls: state.studentRolls.map((m: { student_id: number; roll_state: string }) =>
+                        studentRolls: state.studentRolls.map((m: { student_id: number; roll_state: RolllStateType }) =>
                             val.student_id === m.student_id ? { ...m, roll_state: val.roll_state } : m
                         ),
                         all_data: state.all_data && state?.all_data.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
@@ -87,7 +88,7 @@ const rollReducer = (state: State, action: Action) => {
                 fetched: state.fetched && state?.fetched.map((m: Person) => (val.student_id === m.id ? { ...m, rollValue: val.roll_state } : m)),
             }
         case "reset_all_data":
-            return { ...state, all_data: state.list_of_all_students,studentRolls:initialState.studentRolls }
+            return { ...state, all_data: state.list_of_all_students, studentRolls: initialState.studentRolls }
         default:
             return state
     }
