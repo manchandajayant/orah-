@@ -1,16 +1,140 @@
-import React from "react"
+// External utilities
+import React, { useContext, useEffect, useState } from "react"
+
 import styled from "styled-components"
-import { Spacing } from "shared/styles/styles"
+import { Spacing, BorderRadius } from "shared/styles/styles"
+
+import { RollContext } from "context/student-context-api"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Activity } from "shared/models/activity"
+
+import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
+import CardComponent from "staff-app/components/roll-activity-card/roll-activity-card"
+import DropdownActivity from "staff-app/components/dropdown-sort/dropdown-activity"
+
 
 export const ActivityPage: React.FC = () => {
-  return <S.Container>Activity Page</S.Container>
+    const { loadStateActivity, state, loadStateActivityCall } = useContext<RollContext>(RollContext)
+    const [activity, setActivity] = useState<Activity>({} as Activity)
+
+    useEffect(() => {
+        if (loadStateActivity) {
+            void loadStateActivityCall()
+        }
+    }, [])
+
+    const onclickActivitySelect = (action:string) =>{
+        let filteredValue = state?.all_activity.filter((obj:Activity)=>action === obj.entity.name)
+        setActivity(filteredValue[0])
+    }
+
+    return (
+        <S.Container>
+            <S.ActivityLog>Activity Log</S.ActivityLog>
+
+            {loadStateActivity === "loading" && (
+                <CenteredContainer>
+                    <FontAwesomeIcon icon="spinner" size="2x" spin />
+                </CenteredContainer>
+            )}
+
+            {loadStateActivity === "loaded" && (
+                <>
+                    {state.all_activity?.length < 1 ? (
+                        <CenteredContainer>
+                            <div>You have no rolls at the moment</div>
+                        </CenteredContainer>
+                    ) : (
+                        <>
+                            <DropdownActivity data={state?.all_activity} onclickActivitySelect={onclickActivitySelect} />
+
+                            {Object.keys(activity).length > 1 && <CardComponent data={activity} />}
+                        </>
+                    )}
+                </>
+            )}
+
+            {loadStateActivity === "error" && (
+                <CenteredContainer>
+                    <h1>Sorry, we are not able to load the data at the moment</h1>
+                    <h3>Please come back a little later</h3>
+                </CenteredContainer>
+            )}
+        </S.Container>
+    )
 }
 
 const S = {
-  Container: styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    margin: ${Spacing.u4} auto 0;
-  `,
+    Container: styled.div`
+        display: flex;
+        flex-direction: column;
+        font-family: "Nunito Sans", sans-serif;
+        width: 60%;
+        margin: 2% 0 10% 27%;
+        @media screen and (max-width: 800px) {
+            width: 80%;
+            margin: ${Spacing.u4} auto 50px;
+        }
+    `,
+    ActivityLog: styled.div`
+        display: flex;
+        justify-content: center;
+        font-size: 26px;
+        margin-bottom: 7%;
+        @media screen and (max-width: 800px) {
+            width: 80%;
+            margin-left: 10%;
+        }
+    `,
+    CardContainer: styled.div`
+        width: 100%;
+        height: auto;
+        @media screen and (max-width: 800px) {
+            width: 80%;
+        }
+    `,
+    Card: styled.div`
+        background-color: #fff;
+        width: 100%;
+        height: auto;
+        border-radius: ${BorderRadius.default};
+        font-family: "Nunito Sans", sans-serif;
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 3%;
+    `,
+    Name: styled.div`
+        width: 100%;
+        height: auto;
+        line-height: ${Spacing.u10};
+        margin: ${Spacing.u5} ${Spacing.u5} 0 ${Spacing.u5};
+    `,
+    Date: styled.div`
+        font-family: "Nunito Sans", sans-serif;
+        margin: ${Spacing.u3} ${Spacing.u5};
+    `,
+    Section: styled.div`
+        font-family: "Nunito Sans", sans-serif;
+    `,
+    Total: styled.div`
+        font-family: "Nunito Sans", sans-serif;
+        margin-left: ${Spacing.u5};
+    `,
+    CircleContainer: styled.div`
+        display: flex;
+    `,
+    CircleNumber: styled.span`
+        font-family: "Nunito Sans", sans-serif;
+        margin: 15px;
+        color: #0b152f;
+    `,
+    Circles: styled.span`
+        height: 25px;
+        width: 25px;
+        background-image: ${(props) => props.color};
+        border-radius: 50%;
+        display: flex;
+        margin: ${Spacing.u3};
+    `,
 }
